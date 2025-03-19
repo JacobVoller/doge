@@ -33,3 +33,13 @@ At the time of writing, I have briefly reviewed the eCFR website (~20 seconds), 
 1. **Tools**
     1. **IDE:** VS Code or Visual Studio Community
     1. **Research:** Google & ChatGPT
+
+### API Research
+
+While exploring the eCFR.gov website, I found a link to the developer documentation under Reader Aids > Developer Resources. The styling of the docs suggests they were generated using Swagger, which is great news—this means I can leverage OpenAPI to generate the HTTP client, saving time on manually constructing API requests.
+
+Initially, I couldn't find the corresponding Swagger JSON file on the site, even after searching via Google and ChatGPT. However, upon inspecting the network traffic while browsing the site, I discovered a v1.json file. Opening the URL confirmed that it is the Swagger definition, which should work for auto-generating the client as expected.
+
+1. **API Documentation:** https://www.ecfr.gov/developers/documentation/api/v1#/
+1. **Base URL:** https://www.ecfr.gov
+1. **API Swagger Definition:** https://www.ecfr.gov/developers/documentation/api/v1.json

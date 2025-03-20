@@ -48,3 +48,8 @@ Initially, I couldn't find the corresponding Swagger JSON file on the site, even
 1. **API Documentation:** https://www.ecfr.gov/developers/documentation/api/v1#/
 1. **Base URL:** https://www.ecfr.gov
 1. **API Swagger Definition:** https://www.ecfr.gov/developers/documentation/api/v1.json
+
+### Timeline
+
+1. 20:19 - Hit major delays with generating client in .net. Needed to update to v9.0 runtime, then v9.0 SDK.
+2. 20:37 - Still blocked. swagger file is breaking client generator validation rules. Java issues.

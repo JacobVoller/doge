@@ -43,3 +43,5 @@ Initially, I couldn't find the corresponding Swagger JSON file on the site, even
 ### 20-MAR
 
 1. 07:32 - Spending some time before work.
+2. 08:00 - HTTP Client generation worked but didn't have enough time to get it working within the backend. Time for work.
+3. 17:30 - Starting post-work again.

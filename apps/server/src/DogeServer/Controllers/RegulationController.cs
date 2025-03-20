@@ -1,29 +1,42 @@
+using DogeServer.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DogeServer.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("regulations")]
     public class RegulationController : ControllerBase
     {
 
         private readonly ILogger<RegulationController> _logger;
+        protected readonly RegulationService _service;
 
         public RegulationController(ILogger<RegulationController> logger)
         {
             _logger = logger;
+            _service = new RegulationService();
         }
 
-        [HttpGet(Name = "GetRegulations")]
-        public string Get()
+        [HttpGet("query")]
+        public async Task<IActionResult> Query()
         {
-            return "OK";
+
+
+            await _service.Get();
+
+
+
+
+            return Ok(new { Message = "This is the /x/me endpoint" });
         }
 
-        [HttpPost(Name = "load")]
-        public string Post()
+        [HttpPost("load")]
+        public async Task<IActionResult> Load()
         {
-            return "OK";
+
+            await _service.Get();
+
+            return Ok(new { Message = "This is the /x/me endpoint" });
         }
     }
 }

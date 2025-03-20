@@ -1,4 +1,9 @@
+[![pages-build-deployment](https://github.com/JacobVoller/doge/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/JacobVoller/doge/actions/workflows/pages/pages-build-deployment)
+
 # DOGE
+
+* Public Site: **https://jacobvoller.com/doge/**
+
 
 ## Prompt
 

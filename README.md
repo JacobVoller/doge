@@ -53,3 +53,4 @@ Initially, I couldn't find the corresponding Swagger JSON file on the site, even
 
 1. 20:19 - Hit major delays with generating client in .net. Needed to update to v9.0 runtime, then v9.0 SDK.
 2. 20:37 - Still blocked. swagger file is breaking client generator validation rules. Java issues.
+3. 21:29 - Still blocked. time for a break.

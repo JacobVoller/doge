@@ -5,36 +5,22 @@ namespace DogeServer.Controllers
 {
     [ApiController]
     [Route("regulations")]
-    public class RegulationController : ControllerBase
+    public class RegulationController(ILogger<RegulationController> logger) : ControllerBase
     {
-
-        private readonly ILogger<RegulationController> _logger;
-        protected readonly RegulationService _service;
-
-        public RegulationController(ILogger<RegulationController> logger)
-        {
-            _logger = logger;
-            _service = new RegulationService();
-        }
+        private readonly ILogger<RegulationController> _logger = logger;
 
         [HttpGet("query")]
         public async Task<IActionResult> Query()
         {
-
-
-            await _service.Get();
-
-
-
-
+            //TODO
             return Ok(new { Message = "This is the /x/me endpoint" });
         }
 
         [HttpPost("load")]
         public async Task<IActionResult> Load()
         {
-
-            await _service.Get();
+            var service = new DataRetrievalService();
+            await service.Load();
 
             return Ok(new { Message = "This is the /x/me endpoint" });
         }

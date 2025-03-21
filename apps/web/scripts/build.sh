@@ -1,1 +1,1 @@
-echo "      [WEB] Start"
+echo "      > [WEB] Build"

@@ -1,1 +1,1 @@
-echo "      [SERVER] Start"
+echo "      > [SERVER] Build"

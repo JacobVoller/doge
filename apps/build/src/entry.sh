@@ -19,11 +19,10 @@ execute_app_script () {
     execute "$path" 2>/dev/null
 }
 
-# ARGS=$@
-# MODULE=$1
-# MODULE_PATH="$DIR_APPS/$DIR_MONO_BUILD/src"
-
+# SETUP
+ARGS=$@
 import_utils
+LAUNCH=$(argumentExists "-launch")
 
 # CLEAN
 
@@ -33,3 +32,7 @@ execute_app_script "server" "build" #2>/dev/null
 execute_app_script "web" "build" #2>/dev/null
 
 # LAUNCH
+if [[ LAUNCH -eq 1 ]]
+then
+    execute_app_script "db" "launch" 2>/dev/null
+fi

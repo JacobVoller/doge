@@ -21,11 +21,9 @@
 
 ### Optional Parameters
 
-| Parameter | Description                                |
-| --------- | ------------------------------------------ |
-|           |  |
-|        |                              |
-|        |                      |
+| Parameter | Description                                  |
+| --------- | -------------------------------------------- |
+| -launch   | Launch local instance of database w/ Docker. |
 
 ## Prompt
 

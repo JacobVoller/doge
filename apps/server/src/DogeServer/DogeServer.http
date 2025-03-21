@@ -1,6 +1,0 @@
-@DogeServer_HostAddress = http://localhost:5208
-
-GET {{DogeServer_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

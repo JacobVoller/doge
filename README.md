@@ -4,6 +4,29 @@
 
 * Public Site: **https://jacobvoller.com/doge/**
 
+## Apps
+
+| Application | Description                      |
+| ----------- | -------------------------------- |
+| build       | Mono Repository Build Scripts    |
+| db          | Relational Database (PostgreSQL) |
+| server      | Backend HTTP Server              |
+| web         | Public facing website            |
+
+## Build
+
+<pre>
+./doge.sh -option1 -option2
+</pre>
+
+### Optional Parameters
+
+| Parameter | Description                                |
+| --------- | ------------------------------------------ |
+|           |  |
+|        |                              |
+|        |                      |
+
 ## Prompt
 
 > **Project: eCFR Analyzer**

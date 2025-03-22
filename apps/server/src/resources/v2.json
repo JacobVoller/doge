@@ -854,7 +854,15 @@
           "parameters": [],
           "responses": {
             "200": {
-              "description": "```json\n  {\n    \"titles\": [\n      {\n        \"number\": 1,\n        \"name\": \"General Provisions\",\n        \"latest_amended_on\": \"2022-05-04\",\n        \"latest_issue_date\": \"2022-05-04\",\n        \"up_to_date_as_of\": \"2022-07-28\",\n        \"reserved\": false\n      },\n      {\n        \"number\": 2,\n        \"name\": \"Federal Financial Assistance\",\n        \"latest_amended_on\": \"2022-05-19\",\n        \"latest_issue_date\": \"2022-06-03\",\n        \"up_to_date_as_of\": \"2022-07-28\",\n        \"reserved\": false,\n        \"processing_in_progress\": true\n      },\n      {\n        \"number\": 3,\n        \"name\": \"The President\",\n        \"latest_amended_on\": \"2015-03-17\",\n        \"latest_issue_date\": \"2019-06-27\",\n        \"up_to_date_as_of\": \"2022-07-28\",\n        \"reserved\": false\n      },\n      ...\n    ],\n    meta\": {\n      \"date\": \"2022-07-29\",\n      \"import_in_progress\": true\n    }\n  }\n```\n"
+              "description": "```json\n  {\n    \"titles\": [\n      {\n        \"number\": 1,\n        \"name\": \"General Provisions\",\n        \"latest_amended_on\": \"2022-05-04\",\n        \"latest_issue_date\": \"2022-05-04\",\n        \"up_to_date_as_of\": \"2022-07-28\",\n        \"reserved\": false\n      },\n      {\n        \"number\": 2,\n        \"name\": \"Federal Financial Assistance\",\n        \"latest_amended_on\": \"2022-05-19\",\n        \"latest_issue_date\": \"2022-06-03\",\n        \"up_to_date_as_of\": \"2022-07-28\",\n        \"reserved\": false,\n        \"processing_in_progress\": true\n      },\n      {\n        \"number\": 3,\n        \"name\": \"The President\",\n        \"latest_amended_on\": \"2015-03-17\",\n        \"latest_issue_date\": \"2019-06-27\",\n        \"up_to_date_as_of\": \"2022-07-28\",\n        \"reserved\": false\n      },\n      ...\n    ],\n    meta\": {\n      \"date\": \"2022-07-29\",\n      \"import_in_progress\": true\n    }\n  }\n```\n",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": { "type": "string" }
+                  }
+                }
+              }
             }
           }
         }

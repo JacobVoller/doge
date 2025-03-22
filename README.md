@@ -25,6 +25,39 @@
 | --------- | -------------------------------------------- |
 | -launch   | Launch local instance of database w/ Docker. |
 
+## Structure
+
+<pre>
+.
+├── .github
+|   └── workflows
+|       └── cicd.yml      # CI/CD pipeline
+├── apps                  #
+|   ├── build             # APP: build scripts for monorepo 
+|   |   └── src
+|   |       ├── util      # build script utility functions
+|   |       └── entry.sh  # build script orchestrator
+|   ├── db                # APP: database
+|   |   ├── scripts
+|   |   |   ├── build.sh  # database build script
+|   |   |   └── launch.sh # database launch script for local dev environment
+|   |   └── src
+|   ├── server            # APP: backend HTTP server
+|   |   ├── scripts
+|   |   |   └── build.sh  # backend build script
+|   |   └── src
+|   └── web               # APP: frontend website
+|       ├── scripts
+|       |   └── build.sh  # frontend build script
+|       └── src
+├── docs                  # generated, static files 
+├── readmes               # ancillary readmes
+|   └── approach.md       #
+├── .gitignore
+├── doge.sh               # monorepo build script entry point
+└── README.md             # <-- You are here
+</pre>
+
 ## Prompt
 
 > **Project: eCFR Analyzer**

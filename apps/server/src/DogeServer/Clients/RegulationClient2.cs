@@ -50,6 +50,8 @@ namespace DogeServer.Clients
                 json = await response.Content.ReadAsStringAsync();
                 json = TrimQuotes(json);
 
+                if (json == null) return default;
+
                 return JsonConvert.DeserializeObject<T>(json);
             }
             catch
@@ -68,15 +70,17 @@ namespace DogeServer.Clients
             const string endpoint = "titles.json";
             var response = await Get<TitleResponse>(endpoint);
 
-            return response?.titles;
+            return response?.Titles;
         }
 
-        public async Task<Section[]?> GetSections(string date, int? title)
+        public async Task<Section[]?> GetSections(string? date, int? title)
         {
+            if (date == null || title == null) return null;
+            
             var endpoint = $"full/{date}/title-{title}.xml";
             var response = await Get<SectionResponse>(endpoint);
 
-            return response?.content_versions;
+            return response?.ContentVersions;
         }
     }
 }

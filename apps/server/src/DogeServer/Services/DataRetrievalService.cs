@@ -37,7 +37,7 @@ namespace DogeServer.Services
         {
             if (title == null) return;
 
-            var titles = await client.GetSections(title.latest_amended_on, title.number);
+            var titles = await client.GetSections(title?.LastAmended, title?.Number);
 
 
         }

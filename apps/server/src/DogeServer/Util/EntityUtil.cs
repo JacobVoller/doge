@@ -29,8 +29,8 @@ namespace DogeServer.Util
 
                 var canCombine = property.CanRead
                     && property.CanWrite
-                    && property.GetGetMethod(true).IsPublic
-                    && property.GetSetMethod(true).IsPublic;
+                    && (property.GetGetMethod(true)?.IsPublic ?? false)
+                    && (property.GetSetMethod(true)?.IsPublic ?? false);
 
                 if (!canCombine)
                     continue;

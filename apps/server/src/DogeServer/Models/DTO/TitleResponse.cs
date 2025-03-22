@@ -6,7 +6,7 @@ namespace DogeServer.Models.DTO;
 public class TitleResponse
 {
     [JsonProperty("titles")]
-    public Title[]? Titles { get; set; }
+    public Outline[]? Titles { get; set; }
 
     [JsonProperty("meta")] 
     public TitlesMeta? Meta { get; set; }

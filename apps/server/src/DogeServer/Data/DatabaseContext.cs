@@ -7,8 +7,7 @@ namespace DogeServer.Data
     public class DatabaseContext : DbContext
     {
         public string DatabaseName { get; set; } = "doge"; //TODO
-        public DbSet<Title> Titles { get; set; }
-        public DbSet<Section> Sections { get; set; }
+        public DbSet<Outline> Outline { get; set; }
 
         //DO NOT DELETE. Required for EF.
         public DatabaseContext() : base(new DbContextOptionsBuilder<DatabaseContext>()

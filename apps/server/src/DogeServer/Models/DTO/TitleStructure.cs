@@ -37,4 +37,6 @@ public class TitleStructure
     [JsonProperty("received_on")]
     public string? ReceivedOn { get; set; }
 
+    [JsonProperty("descendant_range")]
+    public string? DescendantRange { get; set; }
 }

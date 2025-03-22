@@ -5,8 +5,8 @@ namespace DogeServer.Models.DTO;
 
 public class SectionResponse
 {
-    [JsonProperty("content_versions")]
-    public Section[]? ContentVersions { get; set; }
+    //[JsonProperty("content_versions")]
+    //public Section[]? ContentVersions { get; set; }
     
     [JsonProperty("meta")]
     public SectionMeta? Meta { get; set; }

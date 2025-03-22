@@ -5,8 +5,7 @@ namespace DogeServer.Data
 {
     public class DataLake
     {
-        public readonly TitleManager Title;
-        public readonly SectionManager Section;
+        public readonly OutlineManager Outline;
 
         protected string DatabaseName { get; set; } = "doge"; //TODO
         protected DbContextOptions<DatabaseContext> DatabaseOptions { get; set; }
@@ -19,8 +18,7 @@ namespace DogeServer.Data
                 ? ConfigureInMemoryDbOptions()
                 : ConfigurePostgresOptions();
 
-            Title = new(DatabaseConnection);
-            Section = new(DatabaseConnection);
+            Outline = new(DatabaseConnection);
         }
 
         private DbContextOptions<DatabaseContext> ConfigureInMemoryDbOptions()

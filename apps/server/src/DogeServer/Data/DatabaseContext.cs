@@ -6,7 +6,7 @@ namespace DogeServer.Data
 {
     public class DatabaseContext : DbContext
     {
-        public string? DatabaseName { get; set; } //TODO
+        public string DatabaseName { get; set; } = "doge"; //TODO
         public DbSet<Title> Titles { get; set; }
         public DbSet<Section> Sections { get; set; }
 
@@ -18,9 +18,17 @@ namespace DogeServer.Data
         {
         }
 
-        //DO NOT DELETE.
+        //DO NOT DELETE. Required for schema generation.
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
         {
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseInMemoryDatabase(DatabaseName);
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

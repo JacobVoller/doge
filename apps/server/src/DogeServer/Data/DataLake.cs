@@ -8,20 +8,29 @@ namespace DogeServer.Data
     {
         public readonly TitleManager Title;
 
-        protected DatabaseContext DatabaseContext { get; set; }
+        protected string DatabaseName { get; set; } = "doge"; //TODO
         protected DbContextOptions<DatabaseContext> DatabaseOptions { get; set; }
-        protected string DatabaseName { get; set; }
+        //protected DatabaseContext DatabaseContext { get; set; } //TODO
 
-        public DataLake()
+        public DataLake(bool useInMemoryDb = true)
         {
-            DatabaseContext = new DatabaseContext();
+            //DatabaseContext = new DatabaseContext(); //TODO
+            DatabaseOptions = useInMemoryDb
+                ? ConfigureInMemoryDbOptions()
+                : ConfigurePostgresOptions();
 
             Title = new(DatabaseConnection);
         }
 
+        private DbContextOptions<DatabaseContext> ConfigureInMemoryDbOptions()
+        {
+            return new DbContextOptionsBuilder<DatabaseContext>()
+                .UseInMemoryDatabase(databaseName: DatabaseName)
+                .Options;
+        }
+
         private DbContextOptions<DatabaseContext> ConfigurePostgresOptions()
         {
-            DatabaseName = "doge"; //TODO
             var host = "doge"; //TODO
             var username = "doge"; //TODO
             var password = "doge"; //TODO

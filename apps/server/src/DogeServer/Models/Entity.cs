@@ -10,8 +10,6 @@ namespace DogeServer.Models
         public Guid? ID { get; set; }
 
         public DateTime? Created { get; set; }
-        public Guid? CreatedID { get; set; }
         public DateTime? Deleted { get; set; }
-        public Guid? DeletedID { get; set; }
     }
 }

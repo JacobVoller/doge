@@ -2,7 +2,7 @@
 using DogeServer.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace DogeServer.Services
+namespace DogeServer.Data
 {
     public class DataLake : DbContext
     {

@@ -6,42 +6,43 @@ using DogeServer.Models.Entities;
 
 namespace DogeServer.Services
 {
-    
     public interface IDataRetrievalService
     {
-        Task<DogeServiceControllerResponse<Title[]>> Load();
+        Task<DogeServiceControllerResponse<List<Title>>> Load();
     }
 
     public class DataRetrievalService : IDataRetrievalService
     {
         protected readonly DataLake DataLake;
 
-
         public DataRetrievalService(DataLake dataLake)
         {
             DataLake = dataLake;
         }
 
-        public async Task<DogeServiceControllerResponse<Title[]>> Load()
+        public async Task<DogeServiceControllerResponse<List<Title>>> Load()
         {
-            RegulationClient2 client = new();
+            RegulationClient2 client = new(); //TODO: RENAME RegulationClient2
             var titles = await GetTitles(client);
 
-            return new DogeServiceControllerResponse<Title[]>()
+            return new DogeServiceControllerResponse<List<Title>>()
             {
                 Results = titles
             };
         }
 
-        protected async Task<Title[]?> GetTitles(RegulationClient2 client)
+        protected async Task<List<Title>?> GetTitles(RegulationClient2 client)
         {
             if (client == null) return default;
 
             var titles = await client.GetTitles();
             if (titles == null) return default;
-            if (titles.Length == 0) return default;
+            if (titles.Count == 0) return default;
 
-            //TODO: insert into DB
+            foreach (var title in titles)
+            {
+                await DataLake.Title.Create(title);
+            }
 
             await Task.WhenAll(titles.Select(item => GetSections(client, item)));
 
@@ -56,14 +57,5 @@ namespace DogeServer.Services
 
 
         }
-        
-        
-        
-        
-        
-        
-        
-        
-
     }
 }

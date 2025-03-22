@@ -1,57 +1,42 @@
-﻿using DogeServer.Models;
-using DogeServer.Models.Entities;
+﻿
+using DogeServer.Data.Managers;
 using Microsoft.EntityFrameworkCore;
 
 namespace DogeServer.Data
 {
-    public class DataLake : DbContext
+    public class DataLake
     {
+        public readonly TitleManager Title;
 
-        public string? DatabaseName { get; set; }
+        protected DatabaseContext DatabaseContext { get; set; }
+        protected DbContextOptions<DatabaseContext> DatabaseOptions { get; set; }
+        protected string DatabaseName { get; set; }
 
-        public DbSet<Title> Titles { get; set; }
-        public DbSet<Section> Sections { get; set; }
-
-        //DO NOT DELETE. Required for EF.
-        public DataLake() : base(new DbContextOptionsBuilder<DataLake>()
-            .UseNpgsql($"Host={"localhost"};Database={"doge"};Username={"doge"};Password={"doge"};")
-            .Options
-        )
+        public DataLake()
         {
+            DatabaseContext = new DatabaseContext();
+
+            Title = new(DatabaseConnection);
         }
 
-        //DO NOT DELETE.
-        public DataLake(DbContextOptions<DataLake> options) : base(options)
+        private DbContextOptions<DatabaseContext> ConfigurePostgresOptions()
         {
+            DatabaseName = "doge"; //TODO
+            var host = "doge"; //TODO
+            var username = "doge"; //TODO
+            var password = "doge"; //TODO
+
+            return new DbContextOptionsBuilder<DatabaseContext>()
+                .UseNpgsql($"Host={host};Database={DatabaseName};Username={username};Password={password};")
+                .Options;
         }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        private DatabaseContext DatabaseConnection()
         {
-            modelBuilder.HasDefaultSchema("dbo");
-
-            const string id = "ID";
-            var baseEntity = typeof(Entity);
-            var entities = modelBuilder.Model.GetEntityTypes();
-
-            foreach (var entity in entities)
+            return new DatabaseContext(DatabaseOptions)
             {
-                if (!baseEntity.IsAssignableFrom(entity.ClrType))
-                    continue;
-
-                modelBuilder.Entity(entity.ClrType)
-                   .HasKey(id);
-
-                modelBuilder.Entity(entity.ClrType)
-                    .Property(id)
-                    .ValueGeneratedOnAdd();
-            }
-
-            base.OnModelCreating(modelBuilder);
-        }
-
-        public DbSet<T>? GetTable<T>() where T : Entity
-        {
-            return Set<T>();
+                DatabaseName = DatabaseName
+            };
         }
     }
 }

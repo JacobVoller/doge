@@ -1,5 +1,7 @@
 ﻿
 using DogeServer.Clients;
+using DogeServer.Data;
+using DogeServer.Models;
 using DogeServer.Models.Entities;
 
 namespace DogeServer.Services
@@ -7,30 +9,43 @@ namespace DogeServer.Services
     
     public interface IDataRetrievalService
     {
-        Task Load();
+        Task<DogeServiceControllerResponse<Title[]>> Load();
     }
 
     public class DataRetrievalService : IDataRetrievalService
     {
-        public async Task Load()
-        {
-            RegulationClient2 client = new();
-            await GetTitles(client);
+        protected readonly DataLake DataLake;
 
-            return;
+
+        public DataRetrievalService(DataLake dataLake)
+        {
+            DataLake = dataLake;
         }
 
-        protected async Task GetTitles(RegulationClient2 client)
+        public async Task<DogeServiceControllerResponse<Title[]>> Load()
         {
-            if (client == null) return;
+            RegulationClient2 client = new();
+            var titles = await GetTitles(client);
+
+            return new DogeServiceControllerResponse<Title[]>()
+            {
+                Results = titles
+            };
+        }
+
+        protected async Task<Title[]?> GetTitles(RegulationClient2 client)
+        {
+            if (client == null) return default;
 
             var titles = await client.GetTitles();
-            if (titles == null) return;
-            if (titles.Length == 0) return;
+            if (titles == null) return default;
+            if (titles.Length == 0) return default;
 
             //TODO: insert into DB
 
             await Task.WhenAll(titles.Select(item => GetSections(client, item)));
+
+            return titles;
         }
         
         protected async Task GetSections(RegulationClient2 client, Title title)

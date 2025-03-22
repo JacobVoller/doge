@@ -1,7 +1,6 @@
 using DogeServer.Models.DTO;
 using DogeServer.Models.Entities;
-using Newtonsoft.Json;
-using System.Text.Json;
+using DogeServer.Util;
 
 namespace DogeServer.Clients
 {
@@ -9,12 +8,7 @@ namespace DogeServer.Clients
     {
         protected const string BaseUrl = "https://www.ecfr.gov/api/versioner/v1/";
         protected static readonly HttpClient _httpClient;
-        protected readonly SemaphoreSlim _semaphore =  new(5);
-
-        //protected readonly JsonSerializerOptions JsonOptions = new() { 
-        //    PropertyNameCaseInsensitive = true,
-        //    AllowTrailingCommas = true
-        //};
+        protected readonly SemaphoreSlim _semaphore = new(5); //TODO: Magic Number
 
         static RegulationClient2()
         {
@@ -24,20 +18,9 @@ namespace DogeServer.Clients
             };
         }
 
-        protected static string? TrimQuotes(string? input)
-        {
-            if (input == null) return input;
-            
-            var startsAndEndsWithQuote = input.Length >= 2 && input[0] == '"' && input[^1] == '"';
-            return startsAndEndsWithQuote
-                ? input.Substring(1, input.Length - 2)
-                : input;
-        }
-
         protected async Task<T?> Get<T>(string path)
         {
-            string? json = "";
-            
+            string? json = string.Empty;
             
             await _semaphore.WaitAsync();
             try
@@ -48,11 +31,9 @@ namespace DogeServer.Clients
                 using HttpResponseMessage response = await _httpClient.GetAsync(path);
                 response.EnsureSuccessStatusCode();
                 json = await response.Content.ReadAsStringAsync();
-                json = TrimQuotes(json);
+                json = JsonUtil.TrimQuotes(json);
 
-                if (json == null) return default;
-
-                return JsonConvert.DeserializeObject<T>(json);
+                return JsonUtil.DeSerialize<T>(json);
             }
             catch
             {
@@ -65,22 +46,22 @@ namespace DogeServer.Clients
             }
         }
 
-        public async Task<Title[]?> GetTitles()
+        public async Task<List<Title>?> GetTitles()
         {
             const string endpoint = "titles.json";
             var response = await Get<TitleResponse>(endpoint);
 
-            return response?.Titles;
+            return response?.Titles?.ToList();
         }
 
-        public async Task<Section[]?> GetSections(string? date, int? title)
+        public async Task<List<Section>?> GetSections(string? date, int? title)
         {
             if (date == null || title == null) return null;
             
             var endpoint = $"full/{date}/title-{title}.xml";
             var response = await Get<SectionResponse>(endpoint);
 
-            return response?.ContentVersions;
+            return response?.ContentVersions?.ToList();
         }
     }
 }

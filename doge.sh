@@ -3,7 +3,7 @@
 set -e # stop script execution on failure
 
 clear
-echo "[DOGE] -- START"
+echo "[DOGE] Start"
 
 DIR_APPS="apps"
 DIR_BUILD="build"
@@ -15,4 +15,4 @@ DATABASE_PORT=5432
 
 source "$PATH_BUILD_ENTRY"
 
-echo "[DOGE] -- END"
+echo "[DOGE] Done"

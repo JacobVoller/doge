@@ -28,9 +28,12 @@ namespace DogeServer.Models
             }
             catch (Exception exception)
             {
-                var response = new DogeServiceControllerResponse<int>();
-                response.ErrorMessage = exception?.Message;
-                response.StackTrace = exception?.StackTrace;
+                var response = new DogeServiceControllerResponse<int>
+                {
+                    ErrorMessage = exception?.Message,
+                    StackTrace = exception?.StackTrace,
+                    StatusCode = StatusCodes.Status500InternalServerError
+                };
 
                 return ErrorResponse<int>(response);
             }

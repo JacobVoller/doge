@@ -1,20 +1,40 @@
-﻿namespace DogeServer.Models.Entities
+﻿using Newtonsoft.Json;
+
+namespace DogeServer.Models.Entities
 {
-    public class Section
+    public class Section : Entity
     {
+        [JsonProperty("date")] 
+        public string? Date;
 
-        public string? date;
-        public string? amendment_date;
-        public string? issue_date;
-        public string? identifier;
-        public string? name;
-        public string? part;
-        public bool? substantive;
-        public bool? removed;
-        public string? subpart;
-        public string? title;
-        public string? type;
+        [JsonProperty("amendment_date")] 
+        public string? AmendmentDate;
 
+        [JsonProperty("issue_date")] 
+        public string? IssueDate;
 
+        [JsonProperty("identifier")] 
+        public string? Identifier;
+
+        [JsonProperty("name")] 
+        public string? Name;
+
+        [JsonProperty("part")] 
+        public string? Part;
+
+        [JsonProperty("substantive")] 
+        public bool? Substantive;
+
+        [JsonProperty("removed")] 
+        public bool? Removed;
+
+        [JsonProperty("subpart")] 
+        public string? Subpart;
+
+        [JsonProperty("title")] 
+        public string? Title;
+
+        [JsonProperty("type")] 
+        public string? Type;
     }
 }

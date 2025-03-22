@@ -1,13 +1,28 @@
-﻿namespace DogeServer.Models.Entities
+﻿using Newtonsoft.Json;
+
+namespace DogeServer.Models.Entities
 {
-    public class Title
+    public class Title : Entity
     {
-        public int? number { get; set; }
-        public string? name { get; set; }
-        public string? latest_amended_on { get; set; }
-        public string? latest_issue_date { get; set; }
-        public string? up_to_date_as_of { get; set; }
-        public bool? reserved { get; set; }      
-        public bool? processing_in_progress { get; set; }
+        [JsonProperty("number")] 
+        public int? Number { get; set; }
+
+        [JsonProperty("name")] 
+        public string? Name { get; set; }
+
+        [JsonProperty("latest_amended_on")] 
+        public string? LastAmended { get; set; }
+
+        [JsonProperty("latest_issue_date")] 
+        public string? LastIssued { get; set; }
+
+        [JsonProperty("up_to_date_as_of")] 
+        public string? LastUpdated { get; set; }
+
+        [JsonProperty("reserved")] 
+        public bool? Reserved { get; set; }
+
+        [JsonProperty("processing_in_progress")] 
+        public bool? ProcessingInProgress { get; set; }
     }
 }

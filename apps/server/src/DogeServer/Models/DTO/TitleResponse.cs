@@ -1,16 +1,23 @@
 ﻿using DogeServer.Models.Entities;
+using Newtonsoft.Json;
 
 namespace DogeServer.Models.DTO
 {
     public class TitleResponse
     {
-        public Title[]? titles { get; set; }
-        public TitlesMeta? meta { get; set; }
+        [JsonProperty("titles")]
+        public Title[]? Titles { get; set; }
+
+        [JsonProperty("meta")] 
+        public TitlesMeta? Meta { get; set; }
     }
 
     public class TitlesMeta
     {
-        public DateTime date { get; set; }
-        public bool import_in_progress { get; set; }
+        [JsonProperty("date")] 
+        public DateTime Date { get; set; }
+
+        [JsonProperty("import_in_progress")] 
+        public bool ImportInProgress { get; set; }
     }
 }

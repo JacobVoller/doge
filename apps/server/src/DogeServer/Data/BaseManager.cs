@@ -81,6 +81,8 @@ namespace DogeServer.Data
             return await ExecuteDatabaseQuery(async db =>
             {
                 var table = db.GetTable<T>();
+                if (table == null) return null;
+
                 var existingEntry = await table
                     .Where(x => x.Deleted == null)
                     .FirstOrDefaultAsync(x => x.ID == entity.ID);

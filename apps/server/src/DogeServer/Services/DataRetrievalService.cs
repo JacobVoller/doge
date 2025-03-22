@@ -3,6 +3,7 @@ using DogeServer.Clients;
 using DogeServer.Data;
 using DogeServer.Models;
 using DogeServer.Models.Entities;
+using DogeServer.Util;
 
 namespace DogeServer.Services
 {
@@ -11,14 +12,9 @@ namespace DogeServer.Services
         Task<DogeServiceControllerResponse<List<Title>>> Load();
     }
 
-    public class DataRetrievalService : IDataRetrievalService
+    public class DataRetrievalService(DataLake dataLake) : IDataRetrievalService
     {
-        protected readonly DataLake DataLake;
-
-        public DataRetrievalService(DataLake dataLake)
-        {
-            DataLake = dataLake;
-        }
+        protected readonly DataLake DataLake = dataLake;
 
         public async Task<DogeServiceControllerResponse<List<Title>>> Load()
         {
@@ -35,7 +31,7 @@ namespace DogeServer.Services
         {
             if (client == null) return default;
 
-            var titles = await client.GetTitles();
+            var titles = await client.GetListOfTitles();
             if (titles == null) return default;
             if (titles.Count == 0) return default;
 
@@ -44,18 +40,49 @@ namespace DogeServer.Services
                 await DataLake.Title.Create(title);
             }
 
-            await Task.WhenAll(titles.Select(item => GetSections(client, item)));
+            await Task.WhenAll(titles.Select(item => GetTitleStructure(client, item)));
 
+            //TODO: Testing
+            //return await DataLake.Title.GetAll();
+            
             return titles;
         }
-        
-        protected async Task GetSections(RegulationClient2 client, Title title)
+
+        protected async Task GetTitleStructure(RegulationClient2 client, Title title)
         {
             if (title == null) return;
 
-            var titles = await client.GetSections(title?.LastAmended, title?.Number);
+            var date = title?.LastIssued ?? title?.LastUpdated ?? title?.LastAmended;
+            var titleNumber = title?.Number?.ToString();
 
+            var titleStructure = await client.GetTitleStructure(date, titleNumber);
+            if (titleStructure == null) return;
 
+            EntityUtil.Zip(title, titleStructure);
+            await DataLake.Title.CreateOrUpdate(title);
+
+            //TODO: children
+        }
+
+        //TODO: This may not be needed with GetTitleStructure
+        protected async Task<List<Section>?> GetSections(RegulationClient2 client, Title title)
+        {
+            if (title == null) return default;
+
+            var titleID = title?.ID;
+            if (titleID == Guid.Empty) return default;
+
+            var sections = await client.GetSections(title?.LastAmended, title?.Number);
+            if (sections == null) return default;
+
+            foreach (var section in sections)
+            {
+                section.TitleID = titleID;
+                
+                await DataLake.Section.Create(section);
+            }
+
+            return sections;
         }
     }
 }

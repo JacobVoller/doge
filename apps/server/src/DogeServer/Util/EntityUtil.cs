@@ -45,6 +45,33 @@ namespace DogeServer.Util
             return target;
         }
 
+        public static void Zip<TA, TB>(TA target, TB source)
+        {
+            if (target == null || source == null) return;
+
+            var targetType = typeof(TA);
+            var sourceType = typeof(TB);
+
+            foreach (var targetProp in targetType.GetProperties(BindingFlags.Public | BindingFlags.Instance))
+            {
+                if (!targetProp.CanWrite || !targetProp.CanRead) continue;
+
+                var sourceProp = sourceType.GetProperty(targetProp.Name);
+                if (sourceProp == null || !sourceProp.CanRead) continue;
+
+                // Check if the property types match
+                if (targetProp.PropertyType != sourceProp.PropertyType) continue;
+
+                var targetValue = targetProp.GetValue(target);
+                var sourceValue = sourceProp.GetValue(source);
+
+                if (targetValue == null && sourceValue != null)
+                {
+                    targetProp.SetValue(target, sourceValue);
+                }
+            }
+        }
+
         private static bool AllowPropertyOverride(object? value)
         {
             if (value == null)
@@ -66,5 +93,8 @@ namespace DogeServer.Util
             var defaultValue = Activator.CreateInstance(type);
             return !value.Equals(defaultValue);
         }
+
+
+
     }
 }

@@ -1,0 +1,26 @@
+assets:
+  sources:
+  - _assets/css
+  - _assets/fonts
+  - _assets/img
+  - _assets/js
+  - _assets/posts
+baseurl: https://jacobvoller.com/doge/
+compress_html:
+  comments:
+  - <!--
+  - -->
+destination: ../../../../docs
+disable_disk_cache: true
+include:
+- .well-known
+exclude:
+- _root
+- _templates
+- _components
+plugins_dir: _plugins
+sass:
+  sass_dir: _sass
+  sourcemap: never
+  style: compressed
+permalink: /posts/:categories/:title/index.html

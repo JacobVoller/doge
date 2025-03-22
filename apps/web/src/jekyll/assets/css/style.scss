@@ -1,0 +1,64 @@
+---
+---
+@import "variables";
+
+body {
+  margin: 0;
+  font-family: $font-family;
+  background: $bg-color;
+  color: $text-color;
+}
+
+header {
+  background: $header-bg;
+  padding: 1em;
+  text-align: center;
+  font-size: 2em;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+nav {
+  text-align: right;
+  background: $nav-bg;
+  padding: 0.5em 1em;
+
+  a {
+    color: $link-color;
+    text-decoration: none;
+    font-weight: bold;
+    margin-left: 1em;
+  }
+}
+
+.container {
+  padding: 2em;
+}
+
+.filters {
+  margin-bottom: 1em;
+
+  input, select {
+    padding: 0.5em;
+    font-size: 1em;
+    margin-right: 0.5em;
+    border-radius: 6px;
+    border: 1px solid $filter-border;
+  }
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: $table-bg;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+
+  th, td {
+    padding: 0.75em;
+    border: 1px solid #ddd;
+    text-align: left;
+  }
+
+  th {
+    background: $table-header-bg;
+  }
+}

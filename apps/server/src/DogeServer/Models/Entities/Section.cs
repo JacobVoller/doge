@@ -1,9 +1,15 @@
 ﻿using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DogeServer.Models.Entities
 {
-    public class Section : Entity
+    public class Section : StructureEntitity
     {
+        public Guid? TitleID { get; set; }
+
+        [ForeignKey("TitleID")]
+        public virtual Title? ParentTitle { get; set; }
+
         [JsonProperty("date")] 
         public string? Date;
 
@@ -12,9 +18,6 @@ namespace DogeServer.Models.Entities
 
         [JsonProperty("issue_date")] 
         public string? IssueDate;
-
-        [JsonProperty("identifier")] 
-        public string? Identifier;
 
         [JsonProperty("name")] 
         public string? Name;
@@ -33,8 +36,5 @@ namespace DogeServer.Models.Entities
 
         [JsonProperty("title")] 
         public string? Title;
-
-        [JsonProperty("type")] 
-        public string? Type;
     }
 }

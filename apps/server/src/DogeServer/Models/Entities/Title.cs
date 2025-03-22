@@ -2,7 +2,7 @@
 
 namespace DogeServer.Models.Entities
 {
-    public class Title : Entity
+    public class Title : StructureEntitity
     {
         [JsonProperty("number")] 
         public int? Number { get; set; }

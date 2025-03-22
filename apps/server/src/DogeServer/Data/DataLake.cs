@@ -1,5 +1,4 @@
-﻿
-using DogeServer.Data.Managers;
+﻿using DogeServer.Data.Managers;
 using Microsoft.EntityFrameworkCore;
 
 namespace DogeServer.Data
@@ -7,6 +6,7 @@ namespace DogeServer.Data
     public class DataLake
     {
         public readonly TitleManager Title;
+        public readonly SectionManager Section;
 
         protected string DatabaseName { get; set; } = "doge"; //TODO
         protected DbContextOptions<DatabaseContext> DatabaseOptions { get; set; }
@@ -20,6 +20,7 @@ namespace DogeServer.Data
                 : ConfigurePostgresOptions();
 
             Title = new(DatabaseConnection);
+            Section = new(DatabaseConnection);
         }
 
         private DbContextOptions<DatabaseContext> ConfigureInMemoryDbOptions()

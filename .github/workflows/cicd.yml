@@ -22,7 +22,8 @@ jobs:
         shell: bash
         run: |
           export TERM=xterm
-          scripts/build.sh
+          sudo chmod +x ./doge.sh
+          ./doge.sh
 
       - name: Update GitHub Pages
         uses: cpina/github-action-push-to-another-repository@main

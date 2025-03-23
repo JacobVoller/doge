@@ -1,4 +1,5 @@
 using DogeServer.Config;
+using DogeServer.Services;
 
 var addSwagger = true;
 var builder = WebApplication.CreateBuilder(args);
@@ -11,7 +12,6 @@ if (addSwagger)
 }
 
 var app = builder.Build();
-var isDevEnv = app.Environment.IsDevelopment(); //TODO
 
 if (addSwagger)
 {
@@ -23,6 +23,12 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
 
+// app.run runs indefinitely. This must be executed before
+AppConfiguration.Init(); 
 
-AppConfiguration.Init(); // app.run runs indefinitely. This must be executed before
+if (AppConfiguration.Startup.SeedOnStartup)
+{
+    await SeedService.Seed();
+}
+
 app.Run();

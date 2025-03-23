@@ -17,6 +17,14 @@ public class SeedService(DataLake dataLake) : ISeedService
 {
     protected readonly DataLake DataLake = dataLake;
 
+    public static async Task Seed()
+    {
+        DataLake dataLake = new();
+        ISeedService service = new SeedService(dataLake);
+
+        await service.StartSeed();
+    }
+
     public async Task<DogeResponse<string>> StartSeed()
     {
         AsyncUtil.FireAndForget(async () =>

@@ -7,6 +7,7 @@ public static class AppConfiguration
 {
     public static DatabaseConfig Database { get; private set; }
     public static EcfrConfig eCFR { get; private set; }
+    public static StartupConfig Startup { get; private set; }   
 
     public static void Init()
     {
@@ -14,6 +15,7 @@ public static class AppConfiguration
 
         Database = Configure<DatabaseConfig>(config, "database");
         eCFR = Configure<EcfrConfig>(config, "ecfr");
+        Startup = Configure<StartupConfig>(config, "startup");
     }
 
     private static IConfiguration BuildConfig()

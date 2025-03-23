@@ -10,21 +10,36 @@ namespace DogeServer.Services;
 
 public interface ISeedService
 {
-    Task<DogeResponse<List<Outline>>> Load();
+    Task<DogeResponse<string>> StartSeed();
+    Task<DogeResponse<int>> OutlineCount();
 }
 
 public class SeedService(DataLake dataLake) : ISeedService
 {
     protected readonly DataLake DataLake = dataLake;
 
-    public async Task<DogeResponse<List<Outline>>> Load()
+    public async Task<DogeResponse<string>> StartSeed()
     {
-        EcfrApiClient client = new();
-        var outline = await GetOutline(client);
-
-        return new DogeResponse<List<Outline>>()
+        AsyncUtil.FireAndForget(async () =>
         {
-            Results = outline
+            EcfrApiClient client = new();
+            await GetOutline(client);
+        });
+
+        return new DogeResponse<string>()
+        {
+            Results = "Seeding started."
+        };
+    }
+
+    public async Task<DogeResponse<int>> OutlineCount()
+    {
+        var outlines = await DataLake.Outline.GetAll();
+        var count = outlines?.Count ?? 0;
+
+        return new DogeResponse<int>()
+        {
+            Results = count
         };
     }
 

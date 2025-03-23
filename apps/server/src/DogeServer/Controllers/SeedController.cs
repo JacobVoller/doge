@@ -15,6 +15,13 @@ public class SeedController() : ControllerBase
     public async Task<IActionResult> Load()
     {
         ISeedService service = new SeedService(_dataLake);
-        return await DogeServiceResponse.GenerateControllerResponse(() => service.Load());
+        return await DogeServiceResponse.GenerateControllerResponse(() => service.StartSeed());
+    }
+
+    [HttpGet("count")]
+    public async Task<IActionResult> GetCount()
+    {
+        ISeedService service = new SeedService(_dataLake);
+        return await DogeServiceResponse.GenerateControllerResponse(() => service.OutlineCount());
     }
 }

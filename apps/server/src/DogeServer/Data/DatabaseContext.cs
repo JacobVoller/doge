@@ -1,16 +1,19 @@
-﻿using DogeServer.Models.Entities;
+﻿using DogeServer.Config;
+using DogeServer.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace DogeServer.Data;
 
 public class DatabaseContext : DbContext
 {
-    public string DatabaseName { get; set; } = "doge"; //TODO
     public DbSet<Outline> Outline { get; set; }
 
     //DO NOT DELETE. Required for EF.
     public DatabaseContext() : base(new DbContextOptionsBuilder<DatabaseContext>()
-        .UseNpgsql($"Host={"localhost"};Database={"doge"};Username={"doge"};Password={"doge"};") //TODO: Hardcoded
+        .UseNpgsql($"Host={AppConfiguration.Database.Host};"
+            + $"Database={AppConfiguration.Database.Database};"
+            + $"Username={AppConfiguration.Database.Username};"
+            + $"Password={AppConfiguration.Database.Password};")
         .Options
     )
     {
@@ -25,7 +28,7 @@ public class DatabaseContext : DbContext
     {
         if (!optionsBuilder.IsConfigured)
         {
-            optionsBuilder.UseInMemoryDatabase(DatabaseName);
+            optionsBuilder.UseInMemoryDatabase(AppConfiguration.Database.Database);
         }
     }
 

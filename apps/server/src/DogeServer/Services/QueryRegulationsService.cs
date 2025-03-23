@@ -7,14 +7,14 @@ namespace DogeServer.Services;
 
 public interface IQueryRegulationsService
 {
-    Task<DogeResponse<QueryResponse>> Query(QueryRequest? request);
+    Task<DogeResponse<QueryRegulationsResponse>> Query(QueryRequest? request);
 }
 
 public class QueryRegulationsService(DataLake dataLake) : IQueryRegulationsService
 {
     protected readonly DataLake DataLake = dataLake;
 
-    public async Task<DogeResponse<QueryResponse>> Query(QueryRequest? request = null)
+    public async Task<DogeResponse<QueryRegulationsResponse>> Query(QueryRequest? request = null)
     {
         var input = CleanseRequest(request);
         var output = NewResponse(input);
@@ -46,11 +46,11 @@ public class QueryRegulationsService(DataLake dataLake) : IQueryRegulationsServi
             : cleansed;
     }
 
-    protected DogeResponse<QueryResponse> NewResponse(QueryRequest filters)
+    protected DogeResponse<QueryRegulationsResponse> NewResponse(QueryRequest filters)
     {
-        return new DogeResponse<QueryResponse>
+        return new DogeResponse<QueryRegulationsResponse>
         {
-            Results = new QueryResponse
+            Results = new QueryRegulationsResponse
             {
                 Filters = ReflectionUtil.DeepClone(filters)
             }

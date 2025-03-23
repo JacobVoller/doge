@@ -19,7 +19,7 @@ public class SeedService(DataLake dataLake) : ISeedService
 
     public async Task<DogeResponse<List<Outline>>> Load()
     {
-        EcfrApiClient client = new(); //TODO: RENAME RegulationClient2
+        EcfrApiClient client = new();
         var outline = await GetOutline(client);
 
         return new DogeResponse<List<Outline>>()

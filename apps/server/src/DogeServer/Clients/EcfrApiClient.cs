@@ -1,3 +1,4 @@
+using DogeServer.Config;
 using DogeServer.Models.DTO;
 using DogeServer.Models.Entities;
 using DogeServer.Util;
@@ -7,15 +8,14 @@ namespace DogeServer.Clients;
 
 public class EcfrApiClient
 {
-    protected const string BaseUrl = "https://www.ecfr.gov/api/versioner/v1/";
     protected static readonly HttpClient _httpClient;
-    protected readonly SemaphoreSlim _semaphore = new(5); //TODO: Magic Number
+    protected readonly SemaphoreSlim _semaphore = new(AppConfiguration.eCFR.ConcurrentRequests);
 
     static EcfrApiClient()
     {
         _httpClient = new HttpClient
         {
-            BaseAddress = new Uri(BaseUrl)
+            BaseAddress = new Uri(AppConfiguration.eCFR.BaseUrl)
         };
     }
 

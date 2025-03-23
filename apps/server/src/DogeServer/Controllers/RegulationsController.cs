@@ -1,5 +1,5 @@
 using DogeServer.Data;
-using DogeServer.Models;
+using DogeServer.Models.DogeRequests;
 using DogeServer.Services;
 using DogeServer.Util;
 using Microsoft.AspNetCore.Mvc;

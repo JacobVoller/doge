@@ -1,4 +1,5 @@
-﻿using DogeServer.Data.Managers;
+﻿using DogeServer.Config;
+using DogeServer.Data.Managers;
 using Microsoft.EntityFrameworkCore;
 
 namespace DogeServer.Data;
@@ -7,13 +8,10 @@ public class DataLake
 {
     public readonly OutlineManager Outline;
 
-    protected string DatabaseName { get; set; } = "doge"; //TODO
     protected DbContextOptions<DatabaseContext> DatabaseOptions { get; set; }
-    //protected DatabaseContext DatabaseContext { get; set; } //TODO
 
     public DataLake(bool useInMemoryDb = true)
     {
-        //DatabaseContext = new DatabaseContext(); //TODO
         DatabaseOptions = useInMemoryDb
             ? ConfigureInMemoryDbOptions()
             : ConfigurePostgresOptions();
@@ -21,29 +19,29 @@ public class DataLake
         Outline = new(DatabaseConnection);
     }
 
-    private DbContextOptions<DatabaseContext> ConfigureInMemoryDbOptions()
+    private static DbContextOptions<DatabaseContext> ConfigureInMemoryDbOptions()
     {
         return new DbContextOptionsBuilder<DatabaseContext>()
-            .UseInMemoryDatabase(databaseName: DatabaseName)
+            .UseInMemoryDatabase(databaseName: AppConfiguration.Database.Database)
             .Options;
     }
 
-    private DbContextOptions<DatabaseContext> ConfigurePostgresOptions()
+    private static DbContextOptions<DatabaseContext> ConfigurePostgresOptions()
     {
-        var host = "doge"; //TODO
-        var username = "doge"; //TODO
-        var password = "doge"; //TODO
-
         return new DbContextOptionsBuilder<DatabaseContext>()
-            .UseNpgsql($"Host={host};Database={DatabaseName};Username={username};Password={password};")
+            .UseNpgsql($"Host={AppConfiguration.Database.Host};"
+                + $"Database={AppConfiguration.Database.Database};"
+                + $"Username={AppConfiguration.Database.Username};"
+                + $"Password={AppConfiguration.Database.Password};")
             .Options;
     }
 
     private DatabaseContext DatabaseConnection()
     {
-        return new DatabaseContext(DatabaseOptions)
-        {
-            DatabaseName = DatabaseName
-        };
+        return new DatabaseContext(DatabaseOptions);
+        //TODO: DELETE
+        //{
+        //    DatabaseName = AppConfiguration.Database.Database
+        //};
     }
 }

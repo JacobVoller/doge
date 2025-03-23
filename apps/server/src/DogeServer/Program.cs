@@ -1,3 +1,5 @@
+using DogeServer.Config;
+
 var addSwagger = true;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
@@ -20,4 +22,7 @@ if (addSwagger)
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
+
+
+AppConfiguration.Init(); // app.run runs indefinitely. This must be executed before
 app.Run();

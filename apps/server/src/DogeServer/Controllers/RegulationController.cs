@@ -4,30 +4,26 @@ using DogeServer.Services;
 using DogeServer.Util;
 using Microsoft.AspNetCore.Mvc;
 
-namespace DogeServer.Controllers
+namespace DogeServer.Controllers;
+
+[ApiController]
+[Route("regulations")]
+public class RegulationController(ILogger<RegulationController> logger) : ControllerBase
 {
-    [ApiController]
-    [Route("regulations")]
-    public class RegulationController(ILogger<RegulationController> logger) : ControllerBase
+    protected readonly ILogger<RegulationController> _logger = logger; //TODO
+    protected readonly DataLake _dataLake = new();
+
+    [HttpGet("query")]
+    public async Task<IActionResult> Query(QueryRequest request)
     {
-        private readonly ILogger<RegulationController> _logger = logger; //TODO
+        IQueryService service = new QueryService(_dataLake);
+        return await DogeServiceResponse.GenerateControllerResponse(() => service.Query(request));
+    }
 
-        [HttpGet("query")]
-        public async Task<IActionResult> Query()
-        {
-            return await DogeServiceResponse.GenerateControllerResponse(() => Task.FromResult(new DogeServiceControllerResponse<string>
-            {
-                Results = "TODO"
-            }));
-        }
-
-        [HttpPost("load")]
-        public async Task<IActionResult> Load()
-        {
-            var dataLake = new DataLake();
-            IDataRetrievalService retriever = new DataRetrievalService(dataLake);
-
-            return await DogeServiceResponse.GenerateControllerResponse(() => retriever.Load());
-        }
+    [HttpPost("load")]
+    public async Task<IActionResult> Load()
+    {
+        IDataRetrievalService service = new DataRetrievalService(_dataLake);
+        return await DogeServiceResponse.GenerateControllerResponse(() => service.Load());
     }
 }

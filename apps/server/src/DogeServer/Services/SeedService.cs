@@ -59,36 +59,36 @@ public class SeedService(DataLake dataLake) : ISeedService
     {
         if (outline == null) return;
 
-        var date = 
-            outline?.LastIssued 
-            ?? outline?.LastUpdated 
-            ?? outline?.LastAmended;
+        var date = outline?.LastIssued 
+                   ?? outline?.LastUpdated 
+                   ?? outline?.LastAmended;
         var titleNumber = outline?.Number?.ToString();
 
         var structure = await client.GetTitleStructure(date, titleNumber);
         if (structure == null) return;
 
-        Task.WaitAll(Recur(structure, outline));
+        var asyncTasks = await RecursivelyProcessOutline(structure, outline);
+        Task.WaitAll(asyncTasks);
     }
 
-    //TODO: rename
-    protected List<Task> Recur(TitleStructure structure, Outline? outline = null)
+    protected async Task<List<Task>> RecursivelyProcessOutline(TitleStructure structure, Outline outline)
     {
         var returnTasks = new List<Task>();
 
         if (structure == null) return returnTasks;
 
-        outline ??= new Outline();
         EntityUtil.Zip(outline, structure);
-
-        returnTasks.Add(DataLake.Outline.CreateOrUpdate(outline));
+        await DataLake.Outline.CreateOrUpdate(outline);
 
         if (structure.Children == null) return returnTasks;
         if (structure.Children.Length == 0) return returnTasks;
 
         foreach (var child in structure.Children)
         {
-            returnTasks.AddRange(Recur(child));
+            returnTasks.AddRange(RecursivelyProcessOutline(child, new Outline
+            {
+                ParentID = outline.ID
+            }));
         }
 
         return returnTasks;

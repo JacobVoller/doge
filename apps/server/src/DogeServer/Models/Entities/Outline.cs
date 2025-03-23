@@ -1,9 +1,19 @@
 ﻿using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DogeServer.Models.Entities;
 
 public class Outline : Entity
 {
+    // ForeignKey START
+
+    public Guid? ParentID { get; set; }
+
+    [ForeignKey("ParentID")]
+    public virtual Outline? Parent { get; set; }
+
+    // ForeignKey END
+
     [JsonProperty("amendment_date")]
     public string? AmendmentDate { get; set; }
 

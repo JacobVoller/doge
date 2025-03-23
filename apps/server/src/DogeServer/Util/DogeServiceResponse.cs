@@ -16,7 +16,6 @@ public static class DogeServiceResponse
             return (hasError)
                 ? ErrorResponse(controllerResponse)
                 : new OkObjectResult(controllerResponse); // return HTTP StatusCode 200
-
         }
         catch (Exception exception)
         {

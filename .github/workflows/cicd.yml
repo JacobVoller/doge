@@ -25,15 +25,16 @@ jobs:
           sudo chmod +x ./doge.sh
           ./doge.sh
 
-      # - name: Update GitHub Pages
-      #   uses: cpina/github-action-push-to-another-repository@main
-      #   env:
-      #     API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
-      #   with:
-      #     source-directory: docs
-      #     destination-github-username: jacobvoller
-      #     destination-repository-name: doge
-      #     user-email: contact@jacobvoller.com
-      #     user-name: jacobvoller
-      #     target-branch: main
-      #     commit-message: UPDATE /docs artifacts
+      - name: Deploy Web
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/
+          git diff --cached --quiet || git commit -m "Automated update to /docs/"
+          git push
+
+      - name: Purge CloudFlare cache
+        uses: jakejarvis/cloudflare-purge-action@master
+        env:
+          CLOUDFLARE_ZONE: f4d879a855eb66074e10f649c03cdd6a
+          CLOUDFLARE_TOKEN: ${{ secrets.CLOUDFLARE_TOKEN }}

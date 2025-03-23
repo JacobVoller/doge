@@ -10,9 +10,9 @@ public class DataLake
 
     protected DbContextOptions<DatabaseContext> DatabaseOptions { get; set; }
 
-    public DataLake(bool useInMemoryDb = true)
+    public DataLake()
     {
-        DatabaseOptions = useInMemoryDb
+        DatabaseOptions = AppConfiguration.Database.UseInMemoryDatabase
             ? ConfigureInMemoryDbOptions()
             : ConfigurePostgresOptions();
 

@@ -7,21 +7,21 @@ namespace DogeServer.Controllers;
 
 [ApiController]
 [Route("")]
-public class SeedController() : ControllerBase
+public class SeedController : ControllerBase
 {
-    protected readonly DataLake _dataLake = new();
+    protected readonly DataLake _dataLake;
+    protected readonly ISeedService _service;
+
+    public SeedController() : base()
+    {
+        _dataLake = new();
+        _service = new SeedService(_dataLake);
+    }
 
     [HttpPost("seed")]
     public async Task<IActionResult> Load()
     {
-        ISeedService service = new SeedService(_dataLake);
-        return await DogeServiceResponse.GenerateControllerResponse(() => service.StartSeed());
-    }
-
-    [HttpGet("count")]
-    public async Task<IActionResult> GetCount()
-    {
-        ISeedService service = new SeedService(_dataLake);
-        return await DogeServiceResponse.GenerateControllerResponse(() => service.OutlineCount());
+        return await DogeServiceResponse.GenerateControllerResponse(()
+            => _service.StartSeed());
     }
 }

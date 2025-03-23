@@ -8,14 +8,21 @@ namespace DogeServer.Controllers;
 
 [ApiController]
 [Route("regulations")]
-public class RegulationsController() : ControllerBase
+public class RegulationsController : ControllerBase
 {
-    protected readonly DataLake _dataLake = new();
+    protected readonly DataLake _dataLake;
+    protected readonly IQueryRegulationsService _service;
+
+    public RegulationsController() : base()
+    {
+        _dataLake = new();
+        _service = new QueryRegulationsService(_dataLake);
+    }
 
     [HttpGet("query")]
     public async Task<IActionResult> Query(QueryRequest request)
     {
-        IQueryRegulationsService service = new QueryRegulationsService(_dataLake);
-        return await DogeServiceResponse.GenerateControllerResponse(() => service.Query(request));
+        return await DogeServiceResponse.GenerateControllerResponse(() 
+            => _service.Query(request));
     }
 }

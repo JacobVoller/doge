@@ -32,32 +32,20 @@ public class SeedService(DataLake dataLake) : ISeedService
         };
     }
 
-    public async Task<DogeResponse<int>> OutlineCount()
+    protected async Task GetOutline(EcfrApiClient client)
     {
-        var outlines = await DataLake.Outline.GetAll();
-        var count = outlines?.Count ?? 0;
-
-        return new DogeResponse<int>()
-        {
-            Results = count
-        };
-    }
-
-    protected async Task<List<Outline>?> GetOutline(EcfrApiClient client)
-    {
-        if (client == null) return default;
+        if (client == null) return;
 
         var titles = await client.GetListOfTitles();
-        if (titles == null) return default;
-        if (titles.Count == 0) return default;
+        if (titles == null) return;
+        if (titles.Count == 0) return;
 
         await Task.WhenAll(titles.Select(title => 
             GetTitleStructure(client, title)));
 
-        //TODO: Testing
-        return await DataLake.Outline.GetAll();
-        
-        //return titles;
+        await GenerateHierarchy();
+
+        //TODO: Get actual regulations
     }
 
     protected async Task GetTitleStructure(EcfrApiClient client, Outline outline)
@@ -76,6 +64,7 @@ public class SeedService(DataLake dataLake) : ISeedService
         Task.WaitAll(Recur(structure, outline));
     }
 
+    //TODO: rename
     protected List<Task> Recur(TitleStructure structure, Outline? outline = null)
     {
         var returnTasks = new List<Task>();
@@ -98,6 +87,12 @@ public class SeedService(DataLake dataLake) : ISeedService
         return returnTasks;
     }
 
+    protected async Task GenerateHierarchy()
+    {
+        var titles = await DataLake.Outline.GetTitles();
+        //TODO : continue
+    }
+
     //TODO: This may not be needed with GetTitleStructure
     //protected async Task<List<Section>?> GetSections(RegulationClient2 client, Title title)
     //{
@@ -112,7 +107,7 @@ public class SeedService(DataLake dataLake) : ISeedService
     //    foreach (var section in sections)
     //    {
     //        section.TitleID = titleID;
-            
+
     //        await DataLake.Section.Create(section);
     //    }
 

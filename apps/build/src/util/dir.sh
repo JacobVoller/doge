@@ -23,3 +23,11 @@ dir_copy () {
         cp -a $source/. $target/
     fi
 }
+
+dir_move () {
+    local source=$1
+    local target=$2
+
+    dir_copy "$source" "$target"
+    dir_delete "$source"
+}

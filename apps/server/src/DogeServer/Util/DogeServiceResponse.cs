@@ -10,14 +10,13 @@ public static class DogeServiceResponse
         try
         {
             var controllerResponse = await func();
-            controllerResponse = controllerResponse ?? new DogeServiceControllerResponse<T>();
+            controllerResponse ??= new DogeServiceControllerResponse<T>();
 
             var hasError = !string.IsNullOrEmpty(controllerResponse?.ErrorMessage);
-#pragma warning disable CS8604 // Possible null reference argument.
             return (hasError)
                 ? ErrorResponse(controllerResponse)
                 : new OkObjectResult(controllerResponse); // return HTTP StatusCode 200
-#pragma warning restore CS8604 // Possible null reference argument.
+
         }
         catch (Exception exception)
         {
@@ -32,7 +31,7 @@ public static class DogeServiceResponse
         }
     }
 
-    private static ObjectResult ErrorResponse<T>(DogeServiceControllerResponse<T> responseObject)
+    private static ObjectResult ErrorResponse<T>(DogeServiceControllerResponse<T>? responseObject)
     {
         var httpStatusCode = responseObject?.StatusCode ?? StatusCodes.Status500InternalServerError;
 

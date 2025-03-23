@@ -1,5 +1,107 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>DOGE | Federal Regulations Explorer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
     <body>
-        Hello world.
+        <div class="warning">This website is not affiliated with the United States government nor DOGE.</div>
+        <header class="c">
+          <div class="left">
+            <div class="pre">Department of</div>
+            <div class="main">Government Efficiency</div>
+          </div>
+          <div class="right">
+            <div class="pre">Federal Regulation</div>
+            <div class="main">Explorer</div>
+          </div>
+        </header>
+        <nav class="c">
+          <div class="credit">Developed by Jacob C. Voller</div>
+          <a href="https://github.com/JacobVoller/doge" target="_blank">View Code on GitHub</a>
+        </nav>
+        <div class="container">
+          <p>The Electronic Code of Federal Regulations (eCFR) is a regularly updated, unofficial version of the Code of Federal Regulations (CFR) that provides easier access to the most current federal regulations in effect. It’s maintained by the National Archives and the Office of the Federal Register in collaboration with the Government Publishing Office.</p>
+<p>Use the tool below to search, browse, and explore all active federal regulations directly from the eCFR in a streamlined, user-friendly interface.</p>
+
+<hr>
+<h3>Filter & Search Regulations</h3>
+<div class="filters c">
+  <div class="filter-group">
+    <label for="search">Keyword Search</label>
+    <input type="text" id="search" placeholder="Search...">
+  </div>
+
+  <div class="filter-group">
+    <label for="agencyFilter">Agency</label>
+    <select id="agencyFilter">
+      <option value="">All</option>
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+    </select>
+  </div>
+</div>
+
+<hr>
+<h3>Regulations - Search Results</h3>
+<table id="dataTable">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Category</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Moon Rocket</td>
+      <td>space</td>
+      <td>9000</td>
+    </tr>
+    <tr>
+      <td>Stonks</td>
+      <td>finance</td>
+      <td>420</td>
+    </tr>
+    <tr>
+      <td>Quantum Woof</td>
+      <td>science</td>
+      <td>88</td>
+    </tr>
+  </tbody>
+</table>
+        </div>
+        <script>
+          (async function()
+{
+    const searchInput = document.getElementById('search');
+    const categoryFilter = document.getElementById('categoryFilter');
+    const tableRows = document.querySelectorAll('#dataTable tbody tr');
+
+    function filterTable() {
+      const searchText = searchInput.value.toLowerCase();
+      const category = categoryFilter.value;
+
+      tableRows.forEach(row => {
+        const cells = row.querySelectorAll('td');
+        const name = cells[0].textContent.toLowerCase();
+        const rowCategory = cells[1].textContent.toLowerCase();
+
+        const matchesSearch = name.includes(searchText);
+        const matchesCategory = category === '' || rowCategory === category;
+
+        row.style.display = matchesSearch && matchesCategory ? '' : 'none';
+      });
+    }
+
+    searchInput.addEventListener('input', filterTable);
+    categoryFilter.addEventListener('change', filterTable);
+})();
+        </script>
     </body>
 </html>

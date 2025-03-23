@@ -5,13 +5,13 @@ using Newtonsoft.Json;
 
 namespace DogeServer.Clients;
 
-public class RegulationClient2
+public class EcfrApiClient
 {
     protected const string BaseUrl = "https://www.ecfr.gov/api/versioner/v1/";
     protected static readonly HttpClient _httpClient;
     protected readonly SemaphoreSlim _semaphore = new(5); //TODO: Magic Number
 
-    static RegulationClient2()
+    static EcfrApiClient()
     {
         _httpClient = new HttpClient
         {

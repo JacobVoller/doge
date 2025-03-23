@@ -19,7 +19,7 @@ public class DataRetrievalService(DataLake dataLake) : IDataRetrievalService
 
     public async Task<DogeServiceControllerResponse<List<Outline>>> Load()
     {
-        RegulationClient2 client = new(); //TODO: RENAME RegulationClient2
+        EcfrApiClient client = new(); //TODO: RENAME RegulationClient2
         var outline = await GetOutline(client);
 
         return new DogeServiceControllerResponse<List<Outline>>()
@@ -28,7 +28,7 @@ public class DataRetrievalService(DataLake dataLake) : IDataRetrievalService
         };
     }
 
-    protected async Task<List<Outline>?> GetOutline(RegulationClient2 client)
+    protected async Task<List<Outline>?> GetOutline(EcfrApiClient client)
     {
         if (client == null) return default;
 
@@ -45,7 +45,7 @@ public class DataRetrievalService(DataLake dataLake) : IDataRetrievalService
         //return titles;
     }
 
-    protected async Task GetTitleStructure(RegulationClient2 client, Outline outline)
+    protected async Task GetTitleStructure(EcfrApiClient client, Outline outline)
     {
         if (outline == null) return;
 

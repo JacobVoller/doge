@@ -30,10 +30,9 @@ public class EcfrApiClient
             using HttpResponseMessage response = await _httpClient.GetAsync(path);
             response.EnsureSuccessStatusCode();
             json = await response.Content.ReadAsStringAsync();
-            //json = JsonUtil.TrimQuotes(json);
 
             return JsonConvert.DeserializeObject<T>(json);
-            //return JsonUtil.DeSerialize<T>(json);
+            //return JsonUtil.DeSerialize<T>(json); //TODO: what's wrong with this function
         }
         catch (Exception exception)
         {
@@ -63,6 +62,7 @@ public class EcfrApiClient
         return await Get<TitleStructure>(endpoint);
     }
 
+    //TODO: Delete
     //public async Task<List<Section>?> GetSections(string? date, int? title)
     //{
     //    if (date == null) return default;

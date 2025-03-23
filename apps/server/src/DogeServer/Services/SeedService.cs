@@ -1,28 +1,28 @@
 ﻿
 using DogeServer.Clients;
 using DogeServer.Data;
-using DogeServer.Models;
+using DogeServer.Models.DogeResponses;
 using DogeServer.Models.DTO;
 using DogeServer.Models.Entities;
 using DogeServer.Util;
 
 namespace DogeServer.Services;
 
-public interface IDataRetrievalService
+public interface ISeedService
 {
-    Task<DogeServiceControllerResponse<List<Outline>>> Load();
+    Task<DogeResponse<List<Outline>>> Load();
 }
 
-public class DataRetrievalService(DataLake dataLake) : IDataRetrievalService
+public class SeedService(DataLake dataLake) : ISeedService
 {
     protected readonly DataLake DataLake = dataLake;
 
-    public async Task<DogeServiceControllerResponse<List<Outline>>> Load()
+    public async Task<DogeResponse<List<Outline>>> Load()
     {
         EcfrApiClient client = new(); //TODO: RENAME RegulationClient2
         var outline = await GetOutline(client);
 
-        return new DogeServiceControllerResponse<List<Outline>>()
+        return new DogeResponse<List<Outline>>()
         {
             Results = outline
         };

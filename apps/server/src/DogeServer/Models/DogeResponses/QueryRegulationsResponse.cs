@@ -1,6 +1,8 @@
-﻿namespace DogeServer.Models;
+﻿using DogeServer.Models.DogeRequests;
 
-public class QueryResponse
+namespace DogeServer.Models.DogeResponses;
+
+public class QueryRegulationsResponse
 {
     public QueryRequest? Filters { get; set; }
     public string[]? Columns { get; set; }

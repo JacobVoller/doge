@@ -1,19 +1,20 @@
 ﻿using DogeServer.Data;
-using DogeServer.Models;
+using DogeServer.Models.DogeRequests;
+using DogeServer.Models.DogeResponses;
 using DogeServer.Util;
 
 namespace DogeServer.Services;
 
-public interface IQueryService
+public interface IQueryRegulationsService
 {
-    Task<DogeServiceControllerResponse<QueryResponse>> Query(QueryRequest? request);
+    Task<DogeResponse<QueryResponse>> Query(QueryRequest? request);
 }
 
-public class QueryService(DataLake dataLake) : IQueryService
+public class QueryRegulationsService(DataLake dataLake) : IQueryRegulationsService
 {
     protected readonly DataLake DataLake = dataLake;
 
-    public async Task<DogeServiceControllerResponse<QueryResponse>> Query(QueryRequest? request = null)
+    public async Task<DogeResponse<QueryResponse>> Query(QueryRequest? request = null)
     {
         var input = CleanseRequest(request);
         var output = NewResponse(input);
@@ -45,9 +46,9 @@ public class QueryService(DataLake dataLake) : IQueryService
             : cleansed;
     }
 
-    protected DogeServiceControllerResponse<QueryResponse> NewResponse(QueryRequest filters)
+    protected DogeResponse<QueryResponse> NewResponse(QueryRequest filters)
     {
-        return new DogeServiceControllerResponse<QueryResponse>
+        return new DogeResponse<QueryResponse>
         {
             Results = new QueryResponse
             {

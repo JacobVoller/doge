@@ -1,4 +1,4 @@
-﻿namespace DogeServer.Models;
+﻿namespace DogeServer.Models.DogeRequests;
 
 public class QueryRequest
 {

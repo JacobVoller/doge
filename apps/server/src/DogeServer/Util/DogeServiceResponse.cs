@@ -1,16 +1,16 @@
-﻿using DogeServer.Models;
+﻿using DogeServer.Models.DogeResponses;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DogeServer.Util;
 
 public static class DogeServiceResponse
 {
-    public static async Task<ObjectResult> GenerateControllerResponse<T>(Func<Task<DogeServiceControllerResponse<T>>> func)
+    public static async Task<ObjectResult> GenerateControllerResponse<T>(Func<Task<DogeResponse<T>>> func)
     {
         try
         {
             var controllerResponse = await func();
-            controllerResponse ??= new DogeServiceControllerResponse<T>();
+            controllerResponse ??= new DogeResponse<T>();
 
             var hasError = !string.IsNullOrEmpty(controllerResponse?.ErrorMessage);
             return (hasError)
@@ -20,7 +20,7 @@ public static class DogeServiceResponse
         }
         catch (Exception exception)
         {
-            var response = new DogeServiceControllerResponse<int>
+            var response = new DogeResponse<int>
             {
                 ErrorMessage = exception?.Message,
                 StackTrace = exception?.StackTrace,
@@ -31,7 +31,7 @@ public static class DogeServiceResponse
         }
     }
 
-    private static ObjectResult ErrorResponse<T>(DogeServiceControllerResponse<T>? responseObject)
+    private static ObjectResult ErrorResponse<T>(DogeResponse<T>? responseObject)
     {
         var httpStatusCode = responseObject?.StatusCode ?? StatusCodes.Status500InternalServerError;
 

@@ -1,15 +1,30 @@
 ---
 layout: default
 ---
-<div class="filters">
-  <input type="text" id="search" placeholder="Search...">
-  <select id="categoryFilter">
-    <option value="">All Categories</option>
-    <option value="science">Science</option>
-    option value="finance">Finance</option>
-    <option value="space">Space</option>
-  </select>
+<p>The Electronic Code of Federal Regulations (eCFR) is a regularly updated, unofficial version of the Code of Federal Regulations (CFR) that provides easier access to the most current federal regulations in effect. It’s maintained by the National Archives and the Office of the Federal Register in collaboration with the Government Publishing Office.</p>
+<p>Use the tool below to search, browse, and explore all active federal regulations directly from the eCFR in a streamlined, user-friendly interface.</p>
+
+<hr>
+<h3>Filter & Search Regulations</h3>
+<div class="filters c">
+  <div class="filter-group">
+    <label for="search">Keyword Search</label>
+    <input type="text" id="search" placeholder="Search...">
+  </div>
+
+  <div class="filter-group">
+    <label for="agencyFilter">Agency</label>
+    <select id="agencyFilter">
+      <option value="">All</option>
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+    </select>
+  </div>
 </div>
+
+<hr>
+<h3>Regulations - Search Results</h3>
 <table id="dataTable">
   <thead>
     <tr>

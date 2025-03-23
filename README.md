@@ -13,7 +13,7 @@
 | server      | Backend HTTP Server              |
 | web         | Public facing website            |
 
-## Build
+## Build & Deploy
 
 <pre>
 ./doge.sh -option1 -option2
@@ -24,6 +24,14 @@
 | Parameter | Description                                  |
 | --------- | -------------------------------------------- |
 | -launch   | Launch local instance of database w/ Docker. |
+
+### Deployment
+
+| Application | Description                      |
+| ----------- | -------------------------------- |
+| db          |  |
+| server      |               |
+| web         |             |
 
 ## Structure
 
@@ -67,6 +75,20 @@
 > Please write code to download the current eCFR and analyze it for items such as word count per agency and historical changes over time. Feel free to add your own custom metrics.
 > 
 > There should be a front end visualization for the content where we can click around and ideally query items. Additionally, there should be a public github project with the code.
+
+## Improvements
+
+1. **db**
+   1. Swap InMemoryDB for real PostgreSQL database
+   2. Implement indexing
+2. **server**
+   1. Utalize a load balancer for `server`
+   2. Implement health checks & auto-scaling
+   3. Introduce unit tests
+3. **web**
+   1. Swap static Jekyll for React to make the application more extencible
+   2. Introduce unit tests
+   3. Introduce integration tests
 
 ## Links
 

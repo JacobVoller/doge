@@ -33,6 +33,25 @@ jobs:
           git diff --cached --quiet || git commit -m "Automated update to /docs/"
           git push
 
+      - name: Copy files to GCP VM
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ secrets.GCP_HOST }}
+          username: ${{ secrets.GCP_USERNAME }}
+          key: ${{ secrets.GCP_SSH_KEY }}
+          source: "ServerArtifacts/*"
+          target: "~/myapp"
+
+      - name: Restart app on VM
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.GCP_HOST }}
+          username: ${{ secrets.GCP_USERNAME }}
+          key: ${{ secrets.GCP_SSH_KEY }}
+          script: |
+            pkill dotnet || true
+            nohup dotnet ~/myapp/YourApp.dll > ~/myapp/log.txt 2>&1 &
+
       # - name: Purge CloudFlare cache
       #   uses: jakejarvis/cloudflare-purge-action@master
       #   env:

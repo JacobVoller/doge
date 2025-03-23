@@ -1,0 +1,8 @@
+FROM postgres:latest
+
+ENV POSTGRES_DB=doge
+ENV POSTGRES_USER=doge
+ENV POSTGRES_PASSWORD=doge
+
+EXPOSE 5432 
+CMD ["postgres"]

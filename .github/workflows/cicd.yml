@@ -1,0 +1,39 @@
+name: jacobvoller.com/doge
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  ci:
+    name: Continuous Integration
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Install ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.1'
+
+      - name: Pull git repository
+        uses: actions/checkout@v3
+
+      - name: Build
+        shell: bash
+        run: |
+          export TERM=xterm
+          sudo chmod +x ./doge.sh
+          ./doge.sh
+
+      - name: Update GitHub Pages
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+        with:
+          source-directory: docs
+          destination-github-username: jacobvoller
+          destination-repository-name: doge
+          user-email: contact@jacobvoller.com
+          user-name: jacobvoller
+          target-branch: main
+          commit-message: UPDATE /docs artifacts

@@ -1,0 +1,11 @@
+.DS_STORE
+
+.vs/
+
+**node_modules/
+**bin/
+**obj/
+**.jekyll-cache/
+**.DS_Store
+
+apps/server/src/DogeServer/DogeServer.csproj.user

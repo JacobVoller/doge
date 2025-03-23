@@ -11,7 +11,6 @@ namespace DogeServer.Services;
 public interface ISeedService
 {
     Task<DogeResponse<string>> StartSeed();
-    Task<DogeResponse<int>> OutlineCount();
 }
 
 public class SeedService(DataLake dataLake) : ISeedService

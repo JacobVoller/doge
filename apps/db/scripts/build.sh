@@ -7,3 +7,5 @@ cd ../../..
 
 # TODO
 # BUILD EntityFramework Migration
+
+echo "      > [DB] Done"

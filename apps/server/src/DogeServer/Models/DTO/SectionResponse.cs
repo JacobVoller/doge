@@ -1,5 +1,4 @@
-﻿using DogeServer.Models.Entities;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace DogeServer.Models.DTO;
 

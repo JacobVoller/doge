@@ -11,9 +11,9 @@ public interface IOutlineService
     Task<DogeResponse<int>> Count();
 }
 
-public class OutlineService(DataLake dataLake) : IOutlineService
+public class OutlineService() : IOutlineService
 {
-    protected readonly DataLake DataLake = dataLake;
+    protected readonly DataLake DataLake = DataLakeUtil.Factory();
 
     public async Task<DogeResponse<List<Outline>>> GetTitles()
     {

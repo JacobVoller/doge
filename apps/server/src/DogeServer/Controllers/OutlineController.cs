@@ -9,13 +9,11 @@ namespace DogeServer.Controllers;
 [Route("outline")]
 public class OutlineController : ControllerBase
 {
-    protected readonly DataLake _dataLake;
     protected readonly IOutlineService _service;
 
     public OutlineController() : base()
     {
-        _dataLake = new();
-        _service = new OutlineService(_dataLake);
+        _service = new OutlineService();
     }
 
     [HttpGet("title")]

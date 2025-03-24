@@ -13,16 +13,13 @@ public interface ISeedService
     Task<DogeResponse<string>> StartSeed();
 }
 
-public class SeedService(DataLake dataLake) : ISeedService
+public class SeedService() : ISeedService
 {
-    protected readonly DataLake DataLake = dataLake;
+    protected readonly DataLake DataLake = DataLakeUtil.Factory();
 
     public static async Task Seed()
     {
-        DataLake dataLake = new();
-        ISeedService service = new SeedService(dataLake);
-
-        await service.StartSeed();
+        await new SeedService().StartSeed();
     }
 
     public async Task<DogeResponse<string>> StartSeed()
@@ -99,6 +96,9 @@ public class SeedService(DataLake dataLake) : ISeedService
         var titles = await DataLake.Outline.GetTitles();
         //TODO : continue
     }
+
+
+
 
     //TODO: This may not be needed with GetTitleStructure
     //protected async Task<List<Section>?> GetSections(RegulationClient2 client, Title title)

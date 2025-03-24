@@ -15,7 +15,7 @@ public class RegulationsController : ControllerBase
 
     public RegulationsController() : base()
     {
-        _dataLake = new();
+        _dataLake = DataLakeUtil.Factory();
         _service = new QueryRegulationsService(_dataLake);
     }
 

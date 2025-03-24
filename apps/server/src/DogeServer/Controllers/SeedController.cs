@@ -9,13 +9,11 @@ namespace DogeServer.Controllers;
 [Route("")]
 public class SeedController : ControllerBase
 {
-    protected readonly DataLake _dataLake;
     protected readonly ISeedService _service;
 
     public SeedController() : base()
     {
-        _dataLake = new();
-        _service = new SeedService(_dataLake);
+        _service = new SeedService();
     }
 
     [HttpPost("seed")]

@@ -20,13 +20,11 @@ public class Volume
 
 public class Paragraph
 {
-    [XmlText]               public string?          Text        { get; set; }
-    [XmlElement("E")]       public List<string>?    Emphasis    { get; set; } //RISK
     [XmlElement("PSPACE")]  public string?          Pspace      { get; set; }
-    [XmlElement("I")]       public List<string>?    Italics     { get; set; } //RISK
+    [XmlText]               public List<string>?    Content     { get; set; }
     [XmlElement("HEAD")]    public string?          Header      { get; set; }
     [XmlElement("HED")]     public string?          Hed         { get; set; }
-    [XmlElement("P")]       public List<string>?    Paragraphs  { get; set; } //RISK
+    [XmlElement("P")]       public List<string>?    Paragraphs  { get; set; }
 }
 
 public class Div : Paragraph
@@ -41,9 +39,32 @@ public class Div : Paragraph
     [XmlElement("DIV6")]    public List<Div>?       Subpart     { get; set; }
     [XmlElement("DIV7")]    public List<Div>?       Section     { get; set; }
     [XmlElement("DIV8")]    public List<Div>?       Div8        { get; set; }
-    [XmlElement("AUTH")]    public Paragraph?       Auth        { get; set; } //RISK
-    
+    [XmlElement("AUTH")]    public Paragraph?       Auth        { get; set; }
+    [XmlElement("SECAUTH")] public Paragraph?       SecAuth     { get; set; }
+
+    [XmlElement("XREF")]    public Xref?            Xref        { get; set; }
+    [XmlElement("CITA")]    public Citation?        Citation    { get; set; }
+    [XmlElement("IMG")]     public Image?           Image       { get; set; }
+
     [XmlElement("N")]       public string?          Num         { get; set; }
     [XmlElement("TYPE")]    public string?          Type        { get; set; }
     [XmlElement("VOLUME")]  public string?          Volume      { get; set; }
+}
+
+public class Xref
+{
+    [XmlElement("ID")]      public string?          Id      { get; set; }
+    [XmlElement("REFID")]   public string?          RefId   { get; set; }
+    [XmlText]               public List<string>?    Content { get; set; }
+}
+
+public class Citation
+{
+    [XmlElement("TYPE")]    public string?          Type    { get; set; }
+    [XmlText]               public List<string>?    Content { get; set; }
+}
+
+public class Image
+{
+    [XmlElement("SRC")] public string? SourceUrl { get; set; }
 }

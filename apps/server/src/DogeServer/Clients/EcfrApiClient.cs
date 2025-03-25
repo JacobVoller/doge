@@ -60,6 +60,9 @@ public class EcfrApiClient
         }
         catch (Exception exception)
         {
+            Console.WriteLine($"FAILED XML: {path}");
+            Console.WriteLine($"            {exception.Message}");
+
             ExceptionUtil.Rethrow(exception);
             throw; // fix compiler error
         }

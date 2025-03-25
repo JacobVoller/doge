@@ -28,6 +28,8 @@ public class SeedService() : ISeedService
         {
             EcfrApiClient client = new();
             await GetOutline(client);
+
+            Console.WriteLine("SEED COMPLETE"); //TODO
         });
 
         return new DogeResponse<string>()
@@ -47,7 +49,12 @@ public class SeedService() : ISeedService
         await Task.WhenAll(titles.Select(title => 
             GetTitleStructure(client, title)));
 
-        await GenerateHierarchy();
+        //TODO
+        //await GenerateHierarchy();
+
+        titles = await DataLake.Outline.GetTitles();
+        await Task.WhenAll(titles.Select(title =>
+            DownloadTitle(client, title)));
 
         //TODO: Get actual regulations
     }
@@ -56,16 +63,66 @@ public class SeedService() : ISeedService
     {
         if (outline == null) return;
 
-        var date = outline?.LastIssued 
-                   ?? outline?.LastUpdated 
-                   ?? outline?.LastAmended;
-        var titleNumber = outline?.Number?.ToString();
-
-        var structure = await client.GetTitleStructure(date, titleNumber);
+        var urlComponents = outline.GetRequestComponents();
+        var structure = await client.GetTitleStructure(urlComponents.Item1, urlComponents.Item2);
         if (structure == null) return;
 
         var asyncTasks = await RecursivelyProcessOutline(structure, outline);
         Task.WaitAll(asyncTasks);
+    }
+
+    protected async Task DownloadTitle(EcfrApiClient client, Outline outline)
+    {
+        if (outline == null) return;
+        var urlComponents = outline.GetRequestComponents();
+
+        var full = await client.GetFullTitle(urlComponents.Item1, urlComponents.Item2);
+        if (full == null) return;
+
+        YamlUtil.Serialize(full, urlComponents.Item2); //TODO
+
+        if (full.Title != null)
+        {
+            ProcessXmlTitle(full.Title);
+        }
+
+        if (full.Volume != null)
+        {
+            var volume = full.Volume;
+            //TODO: update volume
+
+            ProcessXmlTitle(volume.Title);
+        }
+    }
+
+    protected void ProcessXmlTitle(Div? title)
+    {
+        if (title == null) return;
+
+        //TODO: update title
+
+        if (title.Chapter == null) return;
+        foreach (var chapter in title.Chapter)
+        {
+            //TODO: update chapter
+
+            if (chapter.Subchapter == null) continue;
+            foreach (var subchapter in chapter.Subchapter)
+            {
+                //TODO: update subchapter
+
+                if (subchapter.Part == null) continue;
+                foreach (var part in subchapter.Part)
+                {
+                    //TODO: update subchapter
+
+                    if (part == null) continue;
+
+                    var debugger = 0;
+                }
+
+            }
+        }
     }
 
     protected async Task<List<Task>> RecursivelyProcessOutline(TitleStructure structure, Outline outline)
@@ -96,9 +153,6 @@ public class SeedService() : ISeedService
         var titles = await DataLake.Outline.GetTitles();
         //TODO : continue
     }
-
-
-
 
     //TODO: This may not be needed with GetTitleStructure
     //protected async Task<List<Section>?> GetSections(RegulationClient2 client, Title title)

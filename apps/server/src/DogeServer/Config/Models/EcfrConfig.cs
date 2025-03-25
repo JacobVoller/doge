@@ -2,6 +2,7 @@
 
 public class EcfrConfig
 {
-    public int ConcurrentRequests { get; set; } = 5;
+    public int ConcurrentJsonRequests { get; set; } = 5;
+    public int ConcurrentXmlRequests { get; set; } = 1;
     public string BaseUrl { get; set; } = "";
 }

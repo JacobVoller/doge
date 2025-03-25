@@ -9,7 +9,8 @@ namespace DogeServer.Clients;
 public class EcfrApiClient
 {
     protected static readonly HttpClient _httpClient;
-    protected readonly SemaphoreSlim _semaphore = new(AppConfiguration.eCFR.ConcurrentRequests);
+    protected readonly SemaphoreSlim _jsonSemaphore = new(AppConfiguration.eCFR.ConcurrentJsonRequests);
+    protected readonly SemaphoreSlim _xmlSemaphore = new(AppConfiguration.eCFR.ConcurrentXmlRequests);
 
     static EcfrApiClient()
     {
@@ -23,7 +24,7 @@ public class EcfrApiClient
     {
         string? json = string.Empty;
         
-        await _semaphore.WaitAsync();
+        await _jsonSemaphore.WaitAsync();
         try
         {
             //TODO: Retry 529s
@@ -41,7 +42,30 @@ public class EcfrApiClient
         }
         finally
         {
-            _semaphore.Release();
+            _jsonSemaphore.Release();
+        }
+    }
+
+    protected async Task<T?> GetXml<T>(string path)
+    {
+        await _xmlSemaphore.WaitAsync();
+        try
+        {
+            //TODO: Retry 529s
+            using HttpResponseMessage response = await _httpClient.GetAsync(path);
+            response.EnsureSuccessStatusCode();
+            var xmlStream = await response.Content.ReadAsStreamAsync();
+
+            return XmlUtil.DeSerialize<T>(xmlStream);
+        }
+        catch (Exception exception)
+        {
+            ExceptionUtil.Rethrow(exception);
+            throw; // fix compiler error
+        }
+        finally
+        {
+            _xmlSemaphore.Release();
         }
     }
 
@@ -60,6 +84,15 @@ public class EcfrApiClient
 
         var endpoint = $"structure/{date}/title-{title}.json";
         return await Get<TitleStructure>(endpoint);
+    }
+
+    public async Task<FullTitleXml?> GetFullTitle(string? date, string? title)
+    {
+        if (date == null) return default;
+        if (title == null) return default;
+
+        var endpoint = $"full/{date}/title-{title}.xml";
+        return await GetXml<FullTitleXml>(endpoint);
     }
 
     //TODO: Delete

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DogeServer.Models.Entities;
 
-public class Outline : Entity
+public partial class Outline : Entity
 {
     // ForeignKey START
 

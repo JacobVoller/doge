@@ -18,15 +18,22 @@ public class Volume
     [XmlElement("SUBJECT")] public string?  Subject { get; set; }
 }
 
-public class Div
+public class Paragraph
 {
-    [XmlElement("HEAD")]    public string?          Header      { get; set; }
-    [XmlElement("HED")]     public string?          Type        { get; set; }
-    [XmlElement("AUTH")]    public Div?             Auth        { get; set; }
+    [XmlText]               public string?          Text        { get; set; }
+    [XmlElement("E")]       public List<string>?    Emphasis    { get; set; } //RISK
     [XmlElement("PSPACE")]  public string?          Pspace      { get; set; }
+    [XmlElement("I")]       public List<string>?    Italics     { get; set; } //RISK
+    [XmlElement("HEAD")]    public string?          Header      { get; set; }
+    [XmlElement("HED")]     public string?          Hed         { get; set; }
+    [XmlElement("P")]       public List<string>?    Paragraphs  { get; set; } //RISK
+}
+
+public class Div : Paragraph
+{
     [XmlElement("SOURCE")]  public Div?             Source      { get; set; }
-    [XmlElement("CITA")]    public string?          Citation    { get; set; }
-    [XmlElement("EDNOTE")]  public string?          Ednote      { get; set; }
+    [XmlElement("EDNOTE")]  public Div?             Ednote      { get; set; }
+
     [XmlElement("DIV2")]    public List<Div>?       Div2        { get; set; }
     [XmlElement("DIV3")]    public List<Div>?       Chapter     { get; set; }
     [XmlElement("DIV4")]    public List<Div>?       Subchapter  { get; set; }
@@ -34,11 +41,9 @@ public class Div
     [XmlElement("DIV6")]    public List<Div>?       Subpart     { get; set; }
     [XmlElement("DIV7")]    public List<Div>?       Section     { get; set; }
     [XmlElement("DIV8")]    public List<Div>?       Div8        { get; set; }
-    [XmlElement("P")]       public List<Paragraph>? Paragraphs  { get; set; }
-}
-
-public class Paragraph
-{
-    [XmlText]           public string?          Text    { get; set; }
-    [XmlElement("I")]   public List<string>?    Italics { get; set; }
+    [XmlElement("AUTH")]    public Paragraph?       Auth        { get; set; } //RISK
+    
+    [XmlElement("N")]       public string?          Num         { get; set; }
+    [XmlElement("TYPE")]    public string?          Type        { get; set; }
+    [XmlElement("VOLUME")]  public string?          Volume      { get; set; }
 }

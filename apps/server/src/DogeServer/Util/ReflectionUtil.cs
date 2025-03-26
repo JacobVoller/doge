@@ -4,11 +4,15 @@ namespace DogeServer.Util;
 
 public static class ReflectionUtil
 {
-    public static object? CreateInstance<T>()
+    public static object CreateInstance<T>()
     {
         var type = typeof(T);
         
-        return Activator.CreateInstance(type);
+        var instance = Activator.CreateInstance(type);
+        if (instance != null)
+            return instance;
+
+        throw new Exception($"ReflectionUtil.CreateInstance failed in create an instance of {type.Name}.");
     }
 
     public static object? CreateInstance(Type type)

@@ -5,17 +5,13 @@ namespace DogeServer.Util;
 
 public static class DogeServiceResponse
 {
+
     public static async Task<ObjectResult> GenerateControllerResponse<T>(Func<Task<DogeResponse<T>>> func)
     {
         try
         {
             var controllerResponse = await func();
-            controllerResponse ??= new DogeResponse<T>();
-
-            var hasError = !string.IsNullOrEmpty(controllerResponse?.ErrorMessage);
-            return (hasError)
-                ? ErrorResponse(controllerResponse)
-                : new OkObjectResult(controllerResponse); // return HTTP StatusCode 200
+            return GenerateControllerResponse(controllerResponse);
         }
         catch (Exception exception)
         {
@@ -28,6 +24,16 @@ public static class DogeServiceResponse
 
             return ErrorResponse<int>(response);
         }
+    }
+
+    public static ObjectResult GenerateControllerResponse<T>(DogeResponse<T>? controllerResponse)
+    {
+        controllerResponse ??= new DogeResponse<T>();
+
+        var hasError = !string.IsNullOrEmpty(controllerResponse?.ErrorMessage);
+        return (hasError)
+            ? ErrorResponse(controllerResponse)
+            : new OkObjectResult(controllerResponse); // return HTTP StatusCode 200
     }
 
     private static ObjectResult ErrorResponse<T>(DogeResponse<T>? responseObject)

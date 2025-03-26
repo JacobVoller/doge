@@ -5,17 +5,17 @@ namespace DogeServer.Config;
 
 public static class AppConfiguration
 {
-    public static DatabaseConfig Database { get; private set; }
-    public static EcfrConfig eCFR { get; private set; }
-    public static StartupConfig Startup { get; private set; }   
+    public static DatabaseConfig Database { get; private set; } = new();
+    public static EcfrConfig eCFR { get; private set; } = new();
+    public static StartupConfig Startup { get; private set; } = new();
 
     public static void Init()
     {
         var config = BuildConfig();
 
-        Database = Configure<DatabaseConfig>(config, "database");
-        eCFR = Configure<EcfrConfig>(config, "ecfr");
-        Startup = Configure<StartupConfig>(config, "startup");
+        Database = Configure<DatabaseConfig>(config, "database") ?? new();
+        eCFR = Configure<EcfrConfig>(config, "ecfr") ?? new();
+        Startup = Configure<StartupConfig>(config, "startup") ?? new();
     }
 
     private static IConfiguration BuildConfig()
@@ -29,7 +29,7 @@ public static class AppConfiguration
         return builder.Build();
     }
 
-    private static T Configure<T>(IConfiguration config, string? section) where T : class
+    private static T? Configure<T>(IConfiguration config, string? section) where T : class
     {
         if (config == null)
             return (ReflectionUtil.CreateInstance<T>() as T);

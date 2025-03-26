@@ -10,26 +10,28 @@ namespace DogeServer.Services;
 
 public interface ISeedService
 {
-    Task<DogeResponse<string>> StartSeed();
+    DogeResponse<string> StartSeed();
 }
 
 public class SeedService() : ISeedService
 {
     protected readonly DataLake DataLake = DataLakeUtil.Factory();
 
-    public static async Task Seed()
+    public static void Seed()
     {
-        await new SeedService().StartSeed();
+        new SeedService().StartSeed();
     }
 
-    public async Task<DogeResponse<string>> StartSeed()
+    public DogeResponse<string> StartSeed()
     {
         AsyncUtil.FireAndForget(async () =>
         {
+            Console.WriteLine("-- SEED -- START ------------------");
+
             EcfrApiClient client = new();
             await GetOutline(client);
 
-            Console.WriteLine("SEED COMPLETE"); //TODO
+            Console.WriteLine("-- SEED -- COMPLETE ---------------");
         });
 
         return new DogeResponse<string>()

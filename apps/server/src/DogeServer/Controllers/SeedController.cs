@@ -1,4 +1,3 @@
-using DogeServer.Data;
 using DogeServer.Services;
 using DogeServer.Util;
 using Microsoft.AspNetCore.Mvc;
@@ -17,9 +16,9 @@ public class SeedController : ControllerBase
     }
 
     [HttpPost("seed")]
-    public async Task<IActionResult> Load()
+    public IActionResult Load()
     {
-        return await DogeServiceResponse.GenerateControllerResponse(()
-            => _service.StartSeed());
+        var result = _service.StartSeed();
+        return DogeServiceResponse.GenerateControllerResponse(result);
     }
 }

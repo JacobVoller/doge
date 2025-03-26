@@ -28,7 +28,7 @@ AppConfiguration.Init();
 
 if (AppConfiguration.Startup.SeedOnStartup)
 {
-    await SeedService.Seed();
+    SeedService.Seed();
 }
 
 app.Run();

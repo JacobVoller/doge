@@ -1,4 +1,5 @@
 ﻿using System.Text.RegularExpressions;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace DogeServer.Util;
 
@@ -101,6 +102,23 @@ public static class StringUtil
         }
 
         return string.Join("\n", toJoin);
+    }
+
+    public static string? GetLine(string? str, int? line)
+    {
+        if (string.IsNullOrEmpty(str)) return default;
+        if (line == null) return default;
+        if (line < 0) return default;
+
+        try
+        {
+            var lines = str.Split(["\r\n", "\r", "\n"], StringSplitOptions.None);
+            return lines[(int)line];
+        }
+        catch
+        {
+            return default;
+        }
     }
 
 }

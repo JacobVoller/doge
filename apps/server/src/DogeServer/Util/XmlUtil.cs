@@ -53,7 +53,7 @@ public static class XmlUtil
         rawXml = RemoveOpenAndCloseTags(rawXml);
         rawXml = RemoveCloseTags(rawXml);
         rawXml = ReplaceTagsWithInlineTag(rawXml);
-        //rawXml = ReplaceTagsWithBullets(rawXml);
+        rawXml = ReplaceImgTags(rawXml);
 
         return rawXml;
     }
@@ -146,21 +146,16 @@ public static class XmlUtil
         return rawXml;
     }
 
-    private static string? ReplaceTagsWithBullets(string? rawXml)
+    private static string? ReplaceImgTags(string? rawXml)
     {
         if (string.IsNullOrEmpty(rawXml)) return default;
 
-        var tagsToRemove = new string[]
-        {
-            "FP-2"
-        };
+        const string pattern = @"<img\b[^>]*\/>";
 
-        foreach (var tag in tagsToRemove)
+        return Regex.Replace(rawXml, pattern, m =>
         {
-            rawXml = rawXml.Replace($"<{tag}>", "* ");
-            rawXml = rawXml.Replace($"<{tag}/>", string.Empty);
-        }
-
-        return rawXml;
+            string tag = m.Value;
+            return "[" + tag.Substring(1, tag.Length - 2) + "]";
+        });
     }
 }

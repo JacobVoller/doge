@@ -6,13 +6,13 @@ namespace DogeServer.Util;
 
 public static class XmlUtil
 {
-    public static T? DeSerialize<T>(Stream? xmlStream)
+    public static T? DeSerialize<T>(Stream? xmlStream, string? exportName = null)
     {
         string? xml = null;
         
         try
         {
-            xml = CleanXml(xmlStream);
+            xml = CleanXml(xmlStream, exportName);
             if (xml == null) return default;
 
             var bytes = Encoding.UTF8.GetBytes(xml);
@@ -41,14 +41,18 @@ public static class XmlUtil
         }
     }
 
-    private static string? CleanXml(Stream? xmlStream)
+    private static string? CleanXml(Stream? xmlStream, string? exportName = null)
     {
         if (xmlStream == null) return default;
 
         using var reader = new StreamReader(xmlStream);
         var rawXml = reader.ReadToEnd();
-
         if (rawXml == null) return default;
+
+        if (exportName != null)
+        {
+            FileUtil.Create(rawXml, null, $"{exportName}_raw", "yml");
+        }
 
         rawXml = RemoveOpenAndCloseTags(rawXml);
         rawXml = RemoveCloseTags(rawXml);

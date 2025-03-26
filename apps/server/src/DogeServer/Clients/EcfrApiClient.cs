@@ -46,7 +46,7 @@ public class EcfrApiClient
         }
     }
 
-    protected async Task<T?> GetXml<T>(string path)
+    protected async Task<T?> GetXml<T>(string path, string? exportName = null)
     {
         await _xmlSemaphore.WaitAsync();
         try
@@ -56,7 +56,7 @@ public class EcfrApiClient
             response.EnsureSuccessStatusCode();
             var xmlStream = await response.Content.ReadAsStreamAsync();
 
-            return XmlUtil.DeSerialize<T>(xmlStream);
+            return XmlUtil.DeSerialize<T>(xmlStream, exportName);
         }
         catch (Exception exception)
         {
@@ -95,7 +95,7 @@ public class EcfrApiClient
         if (title == null) return default;
 
         var endpoint = $"full/{date}/title-{title}.xml";
-        return await GetXml<FullTitleXml>(endpoint);
+        return await GetXml<FullTitleXml>(endpoint, title);
     }
 
     //TODO: Delete

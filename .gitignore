@@ -1,12 +1,15 @@
+# FILES
 .DS_STORE
+apps/server/src/DogeServer/DogeServer.csproj.user
 
+# DIRECTORIES
 .vs/
+apps/server/src/DogeServer/export/
 ServerArtifacts/
 
+# WILDCARDS
 **node_modules/
 **bin/
 **obj/
 **.jekyll-cache/
 **.DS_Store
-
-apps/server/src/DogeServer/DogeServer.csproj.user

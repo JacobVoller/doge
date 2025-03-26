@@ -1,5 +1,4 @@
-﻿
-using DogeServer.Clients;
+﻿using DogeServer.Clients;
 using DogeServer.Data;
 using DogeServer.Models.DogeResponses;
 using DogeServer.Models.DTO;
@@ -24,14 +23,16 @@ public class SeedService() : ISeedService
 
     public DogeResponse<string> StartSeed()
     {
+        const string operation = "SEED";
+
         AsyncUtil.FireAndForget(async () =>
         {
-            Console.WriteLine("-- SEED -- START ------------------");
-
+            DebugUtil.Log(operation, "Start");
+            
             EcfrApiClient client = new();
             await GetOutline(client);
 
-            Console.WriteLine("-- SEED -- COMPLETE ---------------");
+            DebugUtil.Log(operation, "Complete");
         });
 
         return new DogeResponse<string>()
@@ -40,48 +41,48 @@ public class SeedService() : ISeedService
         };
     }
 
-    protected async Task GetOutline(EcfrApiClient client)
+    protected async Task GetOutline(EcfrApiClient httpClient)
     {
-        if (client == null) return;
+        if (httpClient == null) return;
 
-        var titles = await client.GetListOfTitles();
+        var titles = await httpClient.GetListOfTitles();
         if (titles == null) return;
         if (titles.Count == 0) return;
 
         await Task.WhenAll(titles.Select(title => 
-            GetTitleStructure(client, title)));
+            GetTitleStructure(httpClient, title)));
 
         //TODO
         //await GenerateHierarchy();
 
         titles = await DataLake.Outline.GetTitles();
         await Task.WhenAll(titles.Select(title =>
-            DownloadTitle(client, title)));
+            GetTitleContents(httpClient, title)));
 
         //TODO: Get actual regulations
     }
 
-    protected async Task GetTitleStructure(EcfrApiClient client, Outline outline)
+    protected async Task GetTitleStructure(EcfrApiClient httpClient, Outline intTitle)
     {
-        if (outline == null) return;
+        if (intTitle == null) return;
 
-        var urlComponents = outline.GetRequestComponents();
-        var structure = await client.GetTitleStructure(urlComponents.Item1, urlComponents.Item2);
+        var urlComponents = intTitle.GetRequestComponents();
+        var structure = await httpClient.GetTitleStructure(urlComponents.Item1, urlComponents.Item2);
         if (structure == null) return;
 
-        var asyncTasks = await RecursivelyProcessOutline(structure, outline);
+        var asyncTasks = await RecursivelyProcessOutline(structure, intTitle);
         Task.WaitAll(asyncTasks);
     }
 
-    protected async Task DownloadTitle(EcfrApiClient client, Outline outline)
+    protected async Task GetTitleContents(EcfrApiClient httpClient, Outline intTitle)
     {
-        if (outline == null) return;
-        var urlComponents = outline.GetRequestComponents();
+        if (intTitle == null) return;
+        var urlComponents = intTitle.GetRequestComponents();
 
-        var full = await client.GetFullTitle(urlComponents.Item1, urlComponents.Item2);
+        var full = await httpClient.GetFullTitle(urlComponents.Item1, urlComponents.Item2);
         if (full == null) return;
 
-        YamlUtil.Serialize(full, urlComponents.Item2); //TODO
+        YamlUtil.CreateFile(full, urlComponents.Item2);
 
         if (full.Title != null)
         {
@@ -127,23 +128,23 @@ public class SeedService() : ISeedService
         }
     }
 
-    protected async Task<List<Task>> RecursivelyProcessOutline(TitleStructure structure, Outline outline)
+    protected async Task<List<Task>> RecursivelyProcessOutline(TitleStructure extTitle, Outline intTitle)
     {
         var returnTasks = new List<Task>();
 
-        if (structure == null) return returnTasks;
+        if (extTitle == null) return returnTasks;
 
-        EntityUtil.Zip(outline, structure);
-        await DataLake.Outline.CreateOrUpdate(outline);
+        EntityUtil.Zip(intTitle, extTitle);
+        await DataLake.Outline.CreateOrUpdate(intTitle);
 
-        if (structure.Children == null) return returnTasks;
-        if (structure.Children.Length == 0) return returnTasks;
+        if (extTitle.Children == null) return returnTasks;
+        if (extTitle.Children.Length == 0) return returnTasks;
 
-        foreach (var child in structure.Children)
+        foreach (var child in extTitle.Children)
         {
             returnTasks.AddRange(RecursivelyProcessOutline(child, new Outline
             {
-                ParentID = outline.ID
+                ParentID = intTitle.ID
             }));
         }
 

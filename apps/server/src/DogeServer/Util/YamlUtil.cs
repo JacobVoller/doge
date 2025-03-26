@@ -5,22 +5,8 @@ namespace DogeServer.Util;
 
 public static class YamlUtil
 {
-    public static void Serialize<T>(T obj, string? filename)
+    public static string Serialize<T>(T obj)
     {
-        const string dirName = "export";
-        
-        filename ??= StringUtil.Random();
-        filename += ".yml";
-
-        string dir = Path.Combine(Directory.GetCurrentDirectory(), dirName);
-        Directory.CreateDirectory(dir);
-
-        string filePath = Path.Combine(dir, filename);
-        if (File.Exists(filePath))
-        {
-            File.Delete(filePath);
-        }
-
         var serializer = new SerializerBuilder()
             .WithNamingConvention(CamelCaseNamingConvention.Instance)
             .ConfigureDefaultValuesHandling(DefaultValuesHandling.OmitNull)
@@ -28,8 +14,18 @@ public static class YamlUtil
             .ConfigureDefaultValuesHandling(DefaultValuesHandling.OmitEmptyCollections)
             .Build();
 
-        var yaml = serializer.Serialize(obj);
+        return serializer.Serialize(obj);
+    }
 
-        File.WriteAllText(filePath, yaml);
+    public static void CreateFile<T>(T obj, string? filename)
+    {
+        const string dir = "export";
+        const string ext = "yml";
+        
+        filename ??= StringUtil.Random();
+
+        var yaml = Serialize(obj);
+
+        FileUtil.Create(yaml, dir, filename, ext);
     }
 }

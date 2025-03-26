@@ -1,4 +1,5 @@
-﻿using System.Xml.Serialization;
+﻿using System.Xml;
+using System.Xml.Serialization;
 
 namespace DogeServer.Models.DTO;
 
@@ -20,10 +21,10 @@ public class Volume
 
 public class Paragraph
 {
-    [XmlElement("PSPACE")]  public string?          Pspace      { get; set; }
+    [XmlElement("PSPACE")]  public List<string>?    Pspace      { get; set; }
     [XmlText]               public List<string>?    Content     { get; set; }
     [XmlElement("HEAD")]    public string?          Header      { get; set; }
-    [XmlElement("HED")]     public string?          Hed         { get; set; }
+    [XmlElement("HED")]     public List<string>?    Hed         { get; set; }
     [XmlElement("P")]       public List<string>?    Paragraphs  { get; set; }
 }
 
@@ -31,6 +32,7 @@ public class Div : Paragraph
 {
     [XmlElement("SOURCE")]  public Div?             Source      { get; set; }
     [XmlElement("EDNOTE")]  public Div?             Ednote      { get; set; }
+    [XmlElement("NOTE")]    public Div?             Note        { get; set; }
 
     [XmlElement("DIV2")]    public List<Div>?       Div2        { get; set; }
     [XmlElement("DIV3")]    public List<Div>?       Chapter     { get; set; }
@@ -39,12 +41,16 @@ public class Div : Paragraph
     [XmlElement("DIV6")]    public List<Div>?       Subpart     { get; set; }
     [XmlElement("DIV7")]    public List<Div>?       Section     { get; set; }
     [XmlElement("DIV8")]    public List<Div>?       Div8        { get; set; }
+    [XmlElement("DIV9")]    public List<Div>?       Div9        { get; set; }
     [XmlElement("AUTH")]    public Paragraph?       Auth        { get; set; }
     [XmlElement("SECAUTH")] public Paragraph?       SecAuth     { get; set; }
 
     [XmlElement("XREF")]    public Xref?            Xref        { get; set; }
     [XmlElement("CITA")]    public Citation?        Citation    { get; set; }
     [XmlElement("IMG")]     public Image?           Image       { get; set; }
+    [XmlElement("Img")]     public Image?           Image1      { get; set; }
+    [XmlElement("SCOL1")]   public List?            SCOL1       { get; set; }
+    [XmlElement("SCOL2")]   public List?            SCOL2       { get; set; }
 
     [XmlElement("N")]       public string?          Num         { get; set; }
     [XmlElement("TYPE")]    public string?          Type        { get; set; }
@@ -67,4 +73,9 @@ public class Citation
 public class Image
 {
     [XmlElement("SRC")] public string? SourceUrl { get; set; }
+}
+
+public class List
+{
+    [XmlElement("LI")] public List<string>? Bullet1 { get; set; }
 }

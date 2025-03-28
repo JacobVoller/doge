@@ -7,24 +7,19 @@ namespace DogeServer.Data.Managers;
 public class OutlineManager(Func<DatabaseContext> dbConnectCallback)
     : BaseManager<Outline>(dbConnectCallback)
 {
-    protected const string TitleIdentifier = "title";
-    protected const string ChapterIdentifier = "chapter";
-    protected const string SubchapterIdentifier = "subchapter";
-    protected const string PartIdentifier = "part";
-    protected const string SectionIdentifier = "section";
-
     public async Task<List<Outline>> GetTitles()
     {
-        return await GetOutlinesByHierarchy(TitleIdentifier);
+        return await GetOutlinesByHierarchy(Level.Title);
     }
 
     public async Task<List<Outline>> GetChapters()
     {
-        return await GetOutlinesByHierarchy(ChapterIdentifier);
+        return await GetOutlinesByHierarchy(Level.Chapter);
     }
 
-    protected async Task<List<Outline>> GetOutlinesByHierarchy(string typeIdentifier)
+    protected async Task<List<Outline>> GetOutlinesByHierarchy(Level level)
     {
+        var typeIdentifier = EnumUtil.Value(level);
         var array = await ExecuteDatabaseQuery(async db =>
         {
             if (db == null)
@@ -39,7 +34,7 @@ public class OutlineManager(Func<DatabaseContext> dbConnectCallback)
                 .Where(outline => outline.Deleted == null)
                 .Where(outline =>
                     outline.Type != null
-                    && outline.Type.Equals(typeIdentifier, StringComparison.CurrentCultureIgnoreCase))
+                    && outline.Type.Contains(typeIdentifier, StringComparison.CurrentCultureIgnoreCase))
                 .ToArrayAsync();
         });
 

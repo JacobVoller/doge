@@ -1,5 +1,6 @@
 ﻿using DogeServer.Clients;
 using DogeServer.Data;
+using DogeServer.enums;
 using DogeServer.Models.DogeResponses;
 using DogeServer.Models.DTO;
 using DogeServer.Models.Entities;
@@ -58,8 +59,6 @@ public class SeedService() : ISeedService
         titles = await DataLake.Outline.GetTitles();
         await Task.WhenAll(titles.Select(title =>
             GetTitleContents(httpClient, title)));
-
-        //TODO: Get actual regulations
     }
 
     protected async Task GetTitleStructure(EcfrApiClient httpClient, Outline intTitle)
@@ -79,54 +78,64 @@ public class SeedService() : ISeedService
         if (intTitle == null) return;
         var urlComponents = intTitle.GetRequestComponents();
 
-        var full = await httpClient.GetFullTitle(urlComponents.Item1, urlComponents.Item2);
-        if (full == null) return;
+        var completeTitleDoc = await httpClient.GetFullTitle(urlComponents.Item1, urlComponents.Item2);
+        if (completeTitleDoc == null) return;
 
-        YamlUtil.CreateFile(full, urlComponents.Item2);
+        YamlUtil.CreateFile(completeTitleDoc, urlComponents.Item2);
 
-        if (full.Title != null)
+        if (completeTitleDoc.Title != null)
         {
-            ProcessXmlTitle(full.Title);
+            await ProcessXmlTitle(completeTitleDoc.Title);
         }
 
-        if (full.Volume != null)
+        if (completeTitleDoc.Volume != null)
         {
-            var volume = full.Volume;
+            var volume = completeTitleDoc.Volume;
             //TODO: update volume
 
-            ProcessXmlTitle(volume.Title);
+            await ProcessXmlTitle(volume.Title);
         }
     }
 
-    protected void ProcessXmlTitle(Div? title)
+    protected async Task ProcessXmlTitle(Div? node)
     {
-        if (title == null) return;
+        var processor = XmlNodeProcessor.Factory(DataLake);
+        await processor.Volume(node);
+    }
+        
+        //if (node == null) return;
+
+        //var a1 = await DataLake.Outline.GetTitles();
+        //var expectedLabelLevel = $"Title {node.Num}";
+        //var a2 = await DataLake.Outline.GetOutlineByLevelAndLabel(Level.Title, expectedLabelLevel);
+
+        
 
         //TODO: update title
 
-        if (title.Chapter == null) return;
-        foreach (var chapter in title.Chapter)
-        {
-            //TODO: update chapter
+        //if (node.Chapter == null) return;
+      //  foreach (var chapter in node.Chapter)
+        //{
+            ////TODO: update chapter
 
-            if (chapter.Subchapter == null) continue;
-            foreach (var subchapter in chapter.Subchapter)
-            {
-                //TODO: update subchapter
+            //if (chapter.Subchapter == null) continue;
+            //foreach (var subchapter in chapter.Subchapter)
+            //{
+            //    //TODO: update subchapter
 
-                if (subchapter.Part == null) continue;
-                foreach (var part in subchapter.Part)
-                {
-                    //TODO: update subchapter
+            //    if (subchapter.Part == null) continue;
+            //    foreach (var part in subchapter.Part)
+            //    {
+            //        //TODO: update subchapter
 
-                    if (part == null) continue;
+            //        if (part == null) continue;
 
-                    var debugger = 0;
-                }
+            //        //TODO
+            //    }
 
-            }
-        }
-    }
+            //}
+        //}
+    //}
 
     protected async Task<List<Task>> RecursivelyProcessOutline(TitleStructure extTitle, Outline intTitle)
     {

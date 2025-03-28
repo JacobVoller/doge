@@ -3,38 +3,52 @@ using DogeServer.enums;
 using DogeServer.Models.DTO;
 using DogeServer.Models.Entities;
 using DogeServer.Util;
-using System;
-using System.Xml.Linq;
 
 namespace DogeServer.Services;
 
-public class XmlNodeProcessor
+public class XmlNodeProcessor(DataLake dataLake)
 {
     public static XmlNodeProcessor Factory(DataLake dataLake)
     {
         return new XmlNodeProcessor(dataLake);  
     }
 
-    protected DataLake DataLake { get; set; }
+    protected DataLake DataLake { get; set; } = dataLake;
 
+    // ---DEBUG-----------------------------------------
     protected bool seeded = false;
-    protected List<Outline>? _chapters;
-
-    public XmlNodeProcessor(DataLake dataLake) => DataLake = dataLake;
+    protected Dictionary<string, List<Outline>>? _all;
+    // ---DEBUG-----------------------------------------
 
     protected async Task Seed()
     {
-        await DataLake.Outline.GetChapters();
+        _all = [];
+        var temp = await DataLake.Outline.GetAll();
+        foreach (var t in temp)
+        {
+            var type = t.Type ?? "X";
+            if (!_all.ContainsKey(type))
+            {
+                _all.Add(type, []);
+            }
+
+            _all[type].Add(t);
+        }
+
+        seeded = true;
     }
 
     public async Task Volume(Div? node, Level? l = null, Guid? parentId = null)
     {
-        if (!seeded) await Seed();
+        if (!seeded)
+        {
+            await Seed();
+        }
         
         if (node == null) return;
 
         var level = l ?? Level.Title;
-        var expectedLabelLevel = ExpectedLabel(level, node.Num);
+        var expectedLabelLevel = ExpectedLabel(level, node);
         var intOutline = await DataLake.Outline.GetOutlineByLevelAndLabel(level, expectedLabelLevel, parentId);
 
         if (intOutline == null || intOutline.ID == null)
@@ -53,10 +67,12 @@ public class XmlNodeProcessor
 
         if (node.Chapter != null)
         {
-            tasks.AddRange(node.Chapter.Select(node => Volume(
-                                                              node,
-                                                              Level.Chapter,
-                                                              guid)));
+            tasks.AddRange(
+                node.Chapter.Select(
+                    node => Volume(
+                        node,
+                        Level.Chapter,
+                        guid)));
         }
 
 
@@ -75,25 +91,52 @@ public class XmlNodeProcessor
     //    var debugger = 1;
     //}
 
-    public string? ExpectedLabel(Level? level, string? num)
+    protected string? ExpectedLabel(Level? level, Div? node)
     {
-        if (string.IsNullOrEmpty(num)) return default;
         if (level == null) return default;
+        if (node == null) return default;
+
+        var num = node.Num == null
+            ? 0
+            : int.Parse(node.Num);
+        if (num < 1) return default;
+
+        var roman = RomanNumeralUtil.Convert(num);
 
         return level switch
         {
             Level.Title => $"Title {num}",
-            Level.Chapter => $"Chapter {num}",
+            Level.Chapter => $"Chapter {roman}",
             _ => default,
         };
     }
 
+    protected Level ChildLevel(Level parent)
+    {
+        return parent switch
+        {
+            Level.Title => Level.Chapter,
+            Level.Chapter => Level.Subchapter,
+            Level.Subchapter => Level.Part,
+            Level.Part => Level.Subpart,
+            Level.Subpart => Level.Section,
+            Level.Section => Level.Paragraph,
+            Level.Paragraph => default,
+            _ => default,
+        };
+    }
 
-
-
-
-
-
-
+    protected static Dictionary<int, Outline>? OutlineListToMap(List<Outline>? list)
+    {
+        if (list == null) return default;
+        if (list.Count == 0) return default;
+        
+        return list
+            .Where(o => o != null)
+            .Where(o => o.Number != null)
+            .ToDictionary(
+                o => (int)o.Number,
+                o => o);
+    }
 
 }

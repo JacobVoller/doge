@@ -21,8 +21,9 @@ public class Volume
 
 public class Paragraph
 {
+    [XmlText] public List<string>? Content { get; set; }
+
     [XmlElement("PSPACE")]  public List<string>?    Pspace      { get; set; }
-    [XmlText]               public List<string>?    Content     { get; set; }
     [XmlElement("HEAD")]    public string?          Header      { get; set; }
     [XmlElement("HED")]     public List<string>?    Hed         { get; set; }
     [XmlElement("P")]       public List<string>?    Paragraphs  { get; set; }
@@ -52,9 +53,9 @@ public class Div : Paragraph
     [XmlElement("SCOL1")]   public List?            SCOL1       { get; set; }
     [XmlElement("SCOL2")]   public List?            SCOL2       { get; set; }
 
-    [XmlElement("N")]       public string?          Num         { get; set; }
-    [XmlElement("TYPE")]    public string?          Type        { get; set; }
-    [XmlElement("VOLUME")]  public string?          Volume      { get; set; }
+    [XmlAttribute("N")]       public string?          Num         { get; set; }
+    [XmlAttribute("TYPE")]    public string?          Type        { get; set; }
+    [XmlAttribute("VOLUME")]  public string?          Volume      { get; set; }
 }
 
 public class Xref

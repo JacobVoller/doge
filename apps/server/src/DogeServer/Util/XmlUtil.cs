@@ -51,7 +51,7 @@ public static class XmlUtil
 
         if (exportName != null)
         {
-            FileUtil.Create(rawXml, null, $"{exportName}_raw", "yml");
+            FileUtil.Create(rawXml, null, $"{exportName}_raw", "xml");
         }
 
         rawXml = RemoveOpenAndCloseTags(rawXml);

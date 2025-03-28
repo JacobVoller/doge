@@ -2,7 +2,6 @@
 
 public static class DebugUtil
 {
-    
     public static void Log(string? msg)
     {
         if (string.IsNullOrEmpty(msg)) return;

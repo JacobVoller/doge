@@ -5,9 +5,9 @@ VisualStudioVersion = 17.5.002.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{EBEF919F-E1B9-4D54-AF71-DFB173F62282}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DogeServer", "src\DogeServer\DogeServer.csproj", "{7824D728-B980-495E-8948-2057E8207BDB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DogeServer", "DogeServer\DogeServer.csproj", "{7824D728-B980-495E-8948-2057E8207BDB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DogeServer.Tests", "src\DogeServer.Tests\DogeServer.Tests\DogeServer.Tests.csproj", "{D18E4D8B-A63A-46B8-A5BA-19F2E5968686}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DogeServer.Tests", "DogeServer.Tests\DogeServer.Tests.csproj", "{682629B7-6A32-B589-0125-E465250E230E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,17 +19,16 @@ Global
 		{7824D728-B980-495E-8948-2057E8207BDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7824D728-B980-495E-8948-2057E8207BDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7824D728-B980-495E-8948-2057E8207BDB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D18E4D8B-A63A-46B8-A5BA-19F2E5968686}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D18E4D8B-A63A-46B8-A5BA-19F2E5968686}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D18E4D8B-A63A-46B8-A5BA-19F2E5968686}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D18E4D8B-A63A-46B8-A5BA-19F2E5968686}.Release|Any CPU.Build.0 = Release|Any CPU
+		{682629B7-6A32-B589-0125-E465250E230E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{682629B7-6A32-B589-0125-E465250E230E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{682629B7-6A32-B589-0125-E465250E230E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{682629B7-6A32-B589-0125-E465250E230E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{7824D728-B980-495E-8948-2057E8207BDB} = {EBEF919F-E1B9-4D54-AF71-DFB173F62282}
-		{D18E4D8B-A63A-46B8-A5BA-19F2E5968686} = {EBEF919F-E1B9-4D54-AF71-DFB173F62282}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {305F0533-1D2C-4A0E-BC32-0ABEA52A98C0}

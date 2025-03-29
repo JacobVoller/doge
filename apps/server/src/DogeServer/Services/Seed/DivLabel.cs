@@ -10,13 +10,11 @@ public class DivLabel
         if (level == null
             || string.IsNullOrWhiteSpace(input)) return default;
 
-        var romanNumber = string.Empty;
         var inputIsInt = int.TryParse(input, out int parsedInt);
         int? intNumber = inputIsInt
             ? parsedInt
             : RomanNumeralUtil.Convert(input);
-
-        romanNumber = inputIsInt
+        var romanNumber = inputIsInt
             ? RomanNumeralUtil.Convert(parsedInt)
             : input;
 

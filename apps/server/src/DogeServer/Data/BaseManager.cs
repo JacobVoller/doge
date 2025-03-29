@@ -97,7 +97,7 @@ public abstract class BaseManager<T>(Func<DatabaseContext> dbConnectCallback) wh
         });
     }
 
-    public async Task<Guid?> CreateOrUpdate(T? entity)
+    public virtual async Task<Guid?> CreateOrUpdate(T? entity)
     {
         if (entity == null)
             return null;

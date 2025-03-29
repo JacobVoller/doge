@@ -7,6 +7,29 @@ namespace DogeServer.Data.Managers;
 public class OutlineManager(Func<DatabaseContext> dbConnectCallback)
     : BaseManager<Outline>(dbConnectCallback)
 {
+    public override async Task<Guid?> CreateOrUpdate(Outline? entity)
+    {
+        if (entity != null)
+        {
+            if (entity.Type != null)
+                entity.Type = entity.Type.Trim();
+
+            if (entity.LabelLevel != null)
+                entity.LabelLevel = entity.LabelLevel.Trim();
+
+            if (entity.Label != null)
+                entity.Label = entity.Label.Trim();
+
+            if (entity.Title != null)
+                entity.Title = entity.Title.Trim();
+
+            if (entity.Name != null)
+                entity.Name = entity.Name.Trim();
+        }
+
+        return await base.CreateOrUpdate(entity);
+    }
+
     public async Task<List<Outline>> GetTitles()
     {
         return await GetOutlinesByHierarchy(Level.Title);
@@ -69,7 +92,6 @@ public class OutlineManager(Func<DatabaseContext> dbConnectCallback)
                 results = results.Where(outline =>
                     outline.ParentID == parentId);
             }
-
 
             if (level == Level.Title || level == Level.Chapter)
             {

@@ -25,7 +25,8 @@ public static class ExpectedLabelUtil
                 ? parts[1]
                 : null;
 
-        return (string.IsNullOrEmpty(num))
+        num = StringUtil.GetUntilNonAlphanumeric(num);
+        return (string.IsNullOrWhiteSpace(num))
             ? default
             : DivLabel.Factory(level, num);
     }

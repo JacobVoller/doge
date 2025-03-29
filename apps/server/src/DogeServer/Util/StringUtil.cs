@@ -121,4 +121,16 @@ public static class StringUtil
         }
     }
 
+    public static string? GetUntilNonAlphanumeric(string? input)
+    {
+        if (string.IsNullOrEmpty(input)) return default;
+
+        int index = 0;
+        while (index < input.Length && char.IsLetterOrDigit(input[index]))
+        {
+            index++;
+        }
+
+        return input[..index];
+    }
 }

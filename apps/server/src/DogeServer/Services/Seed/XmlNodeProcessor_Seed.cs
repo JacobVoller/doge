@@ -63,34 +63,34 @@ public partial class XmlNodeProcessor
 
     public static string? ParseHeaderInToExpectedLabelLevel(string? input)
     {
-        const string space = " ";
-        
+        const char space = ' ';
+        const char dash = '-';
+
         if (string.IsNullOrWhiteSpace(input)) return default;
 
         input = input.Trim();
         string title = string.Empty;
-        var firstSpace = input.IndexOf(space);
-        if (firstSpace > 0)
+        var splitIndex = input.IndexOf(space);
+        if (splitIndex > 0)
         {
-            title = input[..firstSpace].Trim();
-            input = input[(firstSpace + 1)..].Trim();
+            title = input[..splitIndex].Trim();
+            input = input[(splitIndex + 1)..].Trim();
         }
 
-        var secondSpace = input.IndexOf(space);
-        var roman = (secondSpace > 0)
-            ? input[..secondSpace].Trim()
+        var dashIndex = input.IndexOf(dash);
+        splitIndex = input.IndexOf(space);
+        splitIndex = (splitIndex >= 0)
+            ? (dashIndex >= 0)
+                ? Math.Min(splitIndex, dashIndex)
+                : splitIndex
+            : dashIndex;
+
+        var roman = (splitIndex > 0)
+            ? input[..splitIndex].Trim()
             : input.Trim();
 
         if (string.IsNullOrWhiteSpace(roman)) return default;
         if (title.Length < 2) return default;
-
-        //    //var match = Regex.Match(input, @"[A-Za-z0-9]+\s[A-Za-z0-9]+\s+", RegexOptions.IgnoreCase);
-        ////if (!match.Success) return default;
-
-        //var type = match.Groups[0].Value;
-        //var indx = type.Split(" ");
-        //type = indx[0];
-        //var romanNumeral = indx[1];
 
         return new StringBuilder()
             .Append(char.ToUpper(title[0]))

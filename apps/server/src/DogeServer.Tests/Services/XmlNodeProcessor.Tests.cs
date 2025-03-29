@@ -39,6 +39,7 @@ public class XmlNodeProcessorTests : BaseFixture
     [TestCase(Level.Chapter, null, "Chapter XXIV", "Chapter XXIV")] // ParseHeaderInToExpectedLabelLevel
     [TestCase(Level.Chapter, "", "Chapter XXIV", "Chapter XXIV")] // ParseHeaderInToExpectedLabelLevel
     [TestCase(Level.Chapter, "IX[RESERVED]", " CHAPTER IV-U.S. IMMIGRATION", "Chapter IX")]
+    [TestCase(Level.Chapter, "IX [RESERVED]", " CHAPTER IX [RESERVED]\n", "Chapter IX")]
     public void ExpectedLabel(Level? level, string? num, string? header, string? expected)
     {
         Div? input = new()

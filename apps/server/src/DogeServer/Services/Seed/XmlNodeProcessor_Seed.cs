@@ -1,4 +1,5 @@
-﻿using DogeServer.Models.Entities;
+﻿using DogeServer.enums;
+using DogeServer.Models.Entities;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -63,22 +64,19 @@ public partial class XmlNodeProcessor
 
     public static string? ParseHeaderInToExpectedLabelLevel(string? input)
     {
-        const char space = ' ';
-        const char dash = '-';
-
         if (string.IsNullOrWhiteSpace(input)) return default;
 
         input = input.Trim();
         string title = string.Empty;
-        var splitIndex = input.IndexOf(space);
+        var splitIndex = input.IndexOf(CharacterConsts.Space);
         if (splitIndex > 0)
         {
             title = input[..splitIndex].Trim();
             input = input[(splitIndex + 1)..].Trim();
         }
 
-        var dashIndex = input.IndexOf(dash);
-        splitIndex = input.IndexOf(space);
+        var dashIndex = input.IndexOf(CharacterConsts.Dash);
+        splitIndex = input.IndexOf(CharacterConsts.Space);
         splitIndex = (splitIndex >= 0)
             ? (dashIndex >= 0)
                 ? Math.Min(splitIndex, dashIndex)

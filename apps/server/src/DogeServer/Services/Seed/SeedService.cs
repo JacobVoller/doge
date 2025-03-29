@@ -5,7 +5,7 @@ using DogeServer.Models.DTO;
 using DogeServer.Models.Entities;
 using DogeServer.Util;
 
-namespace DogeServer.Services;
+namespace DogeServer.Services.Seed;
 
 public interface ISeedService
 {
@@ -143,22 +143,6 @@ public class SeedService() : ISeedService
         if (extTitle == null) return returnTasks;
 
         EntityUtil.Zip(intTitle, extTitle);
-
-        if (intTitle.Type != null)
-            intTitle.Type = intTitle.Type.Trim();
-
-        if (intTitle.LabelLevel != null)
-            intTitle.LabelLevel = intTitle.LabelLevel.Trim();
-
-        if (intTitle.Label != null)
-            intTitle.Label = intTitle.Label.Trim();
-
-        if (intTitle.Title != null)
-            intTitle.Title = intTitle.Title.Trim();
-
-        if (intTitle.Name != null)
-            intTitle.Name = intTitle.Name.Trim();
-
         await DataLake.Outline.CreateOrUpdate(intTitle);
 
         if (extTitle.Children == null) return returnTasks;

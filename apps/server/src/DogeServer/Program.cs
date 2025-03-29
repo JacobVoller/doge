@@ -1,5 +1,5 @@
 using DogeServer.Config;
-using DogeServer.Services;
+using DogeServer.Services.Seed;
 
 var addSwagger = true;
 var builder = WebApplication.CreateBuilder(args);

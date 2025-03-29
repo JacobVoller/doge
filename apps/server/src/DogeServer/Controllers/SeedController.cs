@@ -1,4 +1,4 @@
-using DogeServer.Services;
+using DogeServer.Services.Seed;
 using DogeServer.Util;
 using Microsoft.AspNetCore.Mvc;
 

@@ -4,7 +4,7 @@ apps/server/src/DogeServer/DogeServer.csproj.user
 
 # DIRECTORIES
 .vs/
-apps/server/src/DogeServer/export/
+apps/server/src/_export/
 ServerArtifacts/
 
 # WILDCARDS

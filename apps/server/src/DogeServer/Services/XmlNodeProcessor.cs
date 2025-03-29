@@ -1,12 +1,11 @@
 ﻿using DogeServer.Data;
 using DogeServer.enums;
 using DogeServer.Models.DTO;
-using DogeServer.Models.Entities;
 using DogeServer.Util;
 
 namespace DogeServer.Services;
 
-public class XmlNodeProcessor(DataLake dataLake)
+public partial class XmlNodeProcessor(DataLake dataLake)
 {
     public static XmlNodeProcessor Factory(DataLake dataLake)
     {
@@ -14,29 +13,6 @@ public class XmlNodeProcessor(DataLake dataLake)
     }
 
     protected DataLake DataLake { get; set; } = dataLake;
-
-    // ---DEBUG-----------------------------------------
-    protected bool seeded = false;
-    protected Dictionary<string, List<Outline>>? _all;
-    // ---DEBUG-----------------------------------------
-
-    protected async Task Seed()
-    {
-        _all = [];
-        var temp = await DataLake.Outline.GetAll();
-        foreach (var t in temp)
-        {
-            var type = t.Type ?? "X";
-            if (!_all.ContainsKey(type))
-            {
-                _all.Add(type, []);
-            }
-
-            _all[type].Add(t);
-        }
-
-        seeded = true;
-    }
 
     public async Task Volume(Div? node, Level? l = null, Guid? parentId = null)
     {
@@ -80,33 +56,29 @@ public class XmlNodeProcessor(DataLake dataLake)
         Task.WaitAll(tasks);
     }
 
-    //public async Task Chapter(Div? node, Guid parentId)
-    //{
-    //    if (node == null) return;
-
-    //    var level = Level.Chapter;
-    //    var expectedLabelLevel = ExpectedLabel(level, node.Num);
-    //    var saved = await DataLake.Outline.GetOutlineByLevelAndLabel(level, expectedLabelLevel, parentId);
-
-    //    var debugger = 1;
-    //}
-
     protected string? ExpectedLabel(Level? level, Div? node)
     {
         if (level == null) return default;
         if (node == null) return default;
 
-        var num = node.Num == null
-            ? 0
-            : int.Parse(node.Num);
-        if (num < 1) return default;
+        var num = node.Num;
 
-        var roman = RomanNumeralUtil.Convert(num);
+        if (num == null || num == "0")
+        {
+            return ParseHeaderInToExpectedLabelLevel(node.Header);
+        }
+
+        //var num = node.Num == null
+        //    ? 0
+        //    : int.Parse(node.Num);
+        //if (num < 1) return default;
+
+        //var roman = RomanNumeralUtil.Convert(num);
 
         return level switch
         {
             Level.Title => $"Title {num}",
-            Level.Chapter => $"Chapter {roman}",
+            Level.Chapter => $"Chapter {num}",
             _ => default,
         };
     }
@@ -125,18 +97,4 @@ public class XmlNodeProcessor(DataLake dataLake)
             _ => default,
         };
     }
-
-    protected static Dictionary<int, Outline>? OutlineListToMap(List<Outline>? list)
-    {
-        if (list == null) return default;
-        if (list.Count == 0) return default;
-        
-        return list
-            .Where(o => o != null)
-            .Where(o => o.Number != null)
-            .ToDictionary(
-                o => (int)o.Number,
-                o => o);
-    }
-
 }

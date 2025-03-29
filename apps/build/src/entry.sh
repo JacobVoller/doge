@@ -27,7 +27,10 @@ LAUNCH=$(argumentExists "-launch")
 # CLEAN
 
 # BUILD
-execute_app_script "db" "build" #2>/dev/null
+if [[ LAUNCH -eq 1 ]]
+then
+    execute_app_script "db" "build" #2>/dev/null
+fi
 execute_app_script "server" "build" #2>/dev/null
 execute_app_script "web" "build" #2>/dev/null
 

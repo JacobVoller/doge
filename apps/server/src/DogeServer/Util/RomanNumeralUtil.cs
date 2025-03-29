@@ -1,10 +1,11 @@
 ﻿using System.Text;
+using System.Text.RegularExpressions;
 
 namespace DogeServer.Util;
 
 public static class RomanNumeralUtil
 {
-    private static Dictionary<int, string> Map = new Dictionary<int, string>
+    private static readonly Dictionary<int, string> Map = new()
     {
         {1000, "M"},
         {900, "CM"},
@@ -21,8 +22,9 @@ public static class RomanNumeralUtil
         {1, "I"}
     };
 
-    public static string? Convert(int input)
+    public static string? Convert(int? input)
     {
+        if (input == null) return default;
         if (input < 1) return default;
         if (input > 3999) return default;
 
@@ -38,5 +40,40 @@ public static class RomanNumeralUtil
         }
 
         return result.ToString();
+    }
+
+    public static int? Convert(string? roman)
+    {
+        if (string.IsNullOrWhiteSpace(roman)) return null;
+
+        roman = roman.ToUpperInvariant();
+        int index = 0;
+        int total = 0;
+
+        foreach (var (value, numeral) in Map)
+        {
+            while (roman.AsSpan(index).StartsWith(numeral))
+            {
+                total += value;
+                index += numeral.Length;
+            }
+        }
+
+        return index == roman.Length
+            ? total
+            : null;
+    }
+
+    public static bool IsValid(string? roman)
+    {
+        try
+        {
+            var converted = Convert(roman);
+            return converted != null && converted > 0;
+        }
+        catch
+        {
+            return false;
+        }
     }
 }

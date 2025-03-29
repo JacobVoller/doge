@@ -51,7 +51,7 @@ public partial class Outline : Entity
     public string? Name { get; set; }
 
     [JsonProperty("number")]
-    public int? Number { get; set; }
+    public string? Number { get; set; }
 
     [JsonProperty("part")]
     public string? Part { get; set; }

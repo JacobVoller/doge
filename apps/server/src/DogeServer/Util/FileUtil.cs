@@ -1,4 +1,6 @@
-﻿namespace DogeServer.Util;
+﻿using DogeServer.Config;
+
+namespace DogeServer.Util;
 
 public static class FileUtil
 {
@@ -16,8 +18,8 @@ public static class FileUtil
 
     public static string CreateDirectory(string? dir)
     {
-        dir ??= "export";
-        
+        dir ??= AppConfiguration.ExportDirectory;
+
         var dirPath = GetDirectory(dir);
         Directory.CreateDirectory(dirPath);
 
@@ -47,7 +49,7 @@ public static class FileUtil
     
     public static void Create(string data, string? dir, string? filename, string? extension)
     {
-        dir ??= "export";
+        dir ??= AppConfiguration.ExportDirectory;
         filename ??= StringUtil.Random();
         extension ??= "txt";
         

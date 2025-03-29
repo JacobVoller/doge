@@ -8,6 +8,7 @@ public static class AppConfiguration
     public static DatabaseConfig Database { get; private set; } = new();
     public static EcfrConfig eCFR { get; private set; } = new();
     public static StartupConfig Startup { get; private set; } = new();
+    public static string ExportDirectory { get; private set; } = string.Empty;
 
     public static void Init()
     {
@@ -16,6 +17,7 @@ public static class AppConfiguration
         Database = Configure<DatabaseConfig>(config, "database") ?? new();
         eCFR = Configure<EcfrConfig>(config, "ecfr") ?? new();
         Startup = Configure<StartupConfig>(config, "startup") ?? new();
+        ExportDirectory = Configure<string>(config, "exportDirectory") ?? string.Empty;
     }
 
     private static IConfiguration BuildConfig()
